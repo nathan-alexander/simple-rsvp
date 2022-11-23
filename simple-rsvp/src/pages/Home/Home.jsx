@@ -20,14 +20,14 @@ function Home() {
     }
     useEffect(() => {
         if (user) {
-            getEventsHostedByUser(user.user.id)
+            getEventsHostedByUser(user._id)
         }
     }, [user])
     return (
         <div className='home'>
             {user ? (
                 <div className='user-message'>
-                    <h2>Welcome {user.user.name}</h2>
+                    <h2>Welcome {user.name}</h2>
                     {eventsHosting ? (
                         <div>
                             <h3>You are hosting</h3>

@@ -9,7 +9,7 @@ function Profile() {
     if (user) {
         return (
             <div>
-                <h1>Hello {user.user.name}</h1>
+                <h1>Hello {user.name}</h1>
                 <h3>Account Options</h3>
                 <button onClick={handleLogout}>Logout</button>
             </div>

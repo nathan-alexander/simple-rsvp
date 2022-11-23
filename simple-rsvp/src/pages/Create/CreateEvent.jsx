@@ -10,6 +10,8 @@ function CreateEvent() {
         city: '',
         state: '',
         zip: '',
+        startDate: undefined,
+        endDate: undefined,
         public: true,
     })
     const { createEvent } = useContext(EventContext)
@@ -36,9 +38,12 @@ function CreateEvent() {
                 state: newEvent.state,
                 zip: newEvent.zip,
             },
+            startDate: newEvent.startDate,
+            endDate: newEvent.endDate,
             public: newEvent.public,
-            userId: user.user.id,
+            userId: user._id,
         }
+        console.log(eventObject)
         createEvent(eventObject)
         navigate('/')
     }
@@ -60,6 +65,20 @@ function CreateEvent() {
                     onChange={handleOnChange}
                     name='description'
                     className='text-input'
+                />
+                <input
+                    type='date'
+                    placeholder='Start Date'
+                    value={newEvent.startDate}
+                    onChange={handleOnChange}
+                    name='startDate'
+                />
+                <input
+                    type='date'
+                    placeholder='End Date'
+                    value={newEvent.endDate}
+                    onChange={handleOnChange}
+                    name='endDate'
                 />
                 <input
                     type='text'

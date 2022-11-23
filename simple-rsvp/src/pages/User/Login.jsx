@@ -6,7 +6,8 @@ function Login() {
         email: '', // required
         password: '', // required
     })
-    const { user, loginUser } = useContext(UserContext)
+
+    const { user, loginUser, message } = useContext(UserContext)
     function handleSubmit(e) {
         e.preventDefault()
         loginUser(formData)
@@ -27,6 +28,7 @@ function Login() {
                     </NavLink>
                     instead
                 </h5>
+                {message && <p>{message}</p>}
                 <form className='login-form' onSubmit={(e) => handleSubmit(e)}>
                     <input
                         type='text'
