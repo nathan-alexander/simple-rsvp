@@ -1,0 +1,47 @@
+{
+    "events": [
+        {
+            "id": 1,
+            "name": "Database Event One",
+            "description": "This is an event from database",
+            "location": {
+                "street": "1000 Kelly Beach Rd SE",
+                "city": "Olympia",
+                "state": "Washington",
+                "zip": "98513"
+            },
+            "public": false,
+            "userId": 1,
+            "attendees": [2, 3]
+        },
+        {
+            "name": "Gillian's Event",
+            "description": "This is Gillian's Event",
+            "location": {
+                "street": "777",
+                "city": "Seven Street",
+                "state": "Washington",
+                "zip": "98513"
+            },
+            "public": true,
+            "userId": 2,
+            "id": 2
+        }
+    ],
+    "users": [
+        {
+            "email": "email1@email.com",
+            "password": "$2a$10$UQYkJz03ipcRGSKbz9gm5OZeOZBJaCEmwo2CGvNgJ2vATkl47hzQy",
+            "username": "alexanat",
+            "name": "N",
+            "id": 1
+        },
+        {
+            "email": "email2@email.com",
+            "password": "$2a$10$6944qjY5q3RKWMezaW8PzOsRqcg8r10buFwa0X1yT8r8VfmS6YYWG",
+            "username": "gg",
+            "name": "G",
+            "id": 2
+        }
+    ]
+}
