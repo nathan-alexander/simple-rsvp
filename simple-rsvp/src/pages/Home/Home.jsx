@@ -10,12 +10,12 @@ function Home() {
         useContext(UserContext)
 
     const eventElements = events.map((event, index) => {
-        return <Event key={event.id * index} event={event} />
+        return <Event key={event._id} event={event} />
     })
     let hostedEventElements
     if (eventsHosting) {
         hostedEventElements = eventsHosting.map((event, index) => {
-            return <Event key={event.id * index} event={event} />
+            return <Event key={event._id} event={event} />
         })
     }
     useEffect(() => {
@@ -48,7 +48,7 @@ function Home() {
             )}
             <div className='all-events'>
                 <h3>All Events</h3>
-                {eventElements}
+                {eventElements && eventElements}
             </div>
         </div>
     )

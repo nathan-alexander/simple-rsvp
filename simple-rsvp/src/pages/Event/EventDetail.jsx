@@ -24,7 +24,7 @@ function EventDetail() {
 
     useEffect(() => {
         if (user && event) {
-            setUserIsOwner(user.user.id === event.userId)
+            setUserIsOwner(user._id === event.userId)
         }
     }, [event])
 
@@ -49,7 +49,7 @@ function EventDetail() {
                             <button className='btn btn-edit'>Edit</button>
                             <button
                                 className='btn btn-delete'
-                                onClick={() => handleDelete(event.id)}
+                                onClick={() => handleDelete(event._id)}
                             >
                                 Delete
                             </button>

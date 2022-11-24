@@ -59,8 +59,29 @@ const createEvent = asyncHandler(async (req, res) => {
         throw new Error('Invalid event data')
     }
 })
+const getEventById = asyncHandler(async (req, res) => {
+    //Find id
+    const event = await Event.findOne({ _id: req.params.id })
+    if (event) {
+        res.status(200).json(event)
+    } else {
+        res.status(404)
+        throw new Error('No event found')
+    }
+})
 
+const deleteEventById = asyncHandler(async (req, res) => {
+    try {
+        await Event.findByIdAndDelete({ _id: req.params.id })
+        res.status(200).json('Event deleted')
+    } catch {
+        res.status(400)
+        throw new Error('Something went wrong')
+    }
+})
 module.exports = {
     createEvent,
     getEvents,
+    getEventById,
+    deleteEventById,
 }

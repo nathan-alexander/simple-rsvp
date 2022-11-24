@@ -13,7 +13,6 @@ function UserContextProvider({ children }) {
     async function getEventsHostedByUser(id) {
         const res = await fetch(`${url}/users/${id}/events`)
         const data = await res.json()
-        console.log(data)
         setEventsHosting(data)
     }
     async function loginUser(user) {

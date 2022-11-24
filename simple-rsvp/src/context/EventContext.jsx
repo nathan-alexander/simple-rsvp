@@ -43,7 +43,7 @@ function EventContextProvider({ children }) {
         await fetch(`${url}/events/${id}`, {
             method: 'DELETE',
         })
-        const newEvents = events.filter((event) => event.id !== id)
+        const newEvents = events.filter((event) => event._id !== id)
         setEvents(newEvents)
     }
     return (

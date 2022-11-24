@@ -7,7 +7,7 @@ function Event({ event }) {
         color: event.public ? 'darkgreen' : 'orange',
     }
     return (
-        <Link to={`event/${event.id}`}>
+        <Link to={`event/${event._id}`}>
             <div className='event'>
                 <div className='event-header'>
                     <div>{event.name}</div>
