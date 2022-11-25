@@ -3,12 +3,14 @@ import { useParams } from 'react-router-dom'
 import { EventContext } from '../../context/EventContext'
 import { UserContext } from '../../context/UserContext'
 import { useNavigate } from 'react-router-dom'
+import InviteUserForm from './InviteUserForm'
 function EventDetail() {
     const [event, setEvent] = useState()
     const [userIsOwner, setUserIsOwner] = useState(false)
     const { id } = useParams()
-    const { getEventById, deleteEvent } = useContext(EventContext)
-    const { user } = useContext(UserContext)
+    const { getEventById, deleteEvent, inviteUserToEvent } =
+        useContext(EventContext)
+    const { user, getUserById } = useContext(UserContext)
     const navigate = useNavigate()
     useEffect(() => {
         //This is going to be a more complex event type with more detail.
@@ -23,6 +25,7 @@ function EventDetail() {
     }, [])
 
     useEffect(() => {
+        //Create a function to get all users in the usersInvited array and display them here
         if (user && event) {
             setUserIsOwner(user._id === event.userId)
         }
@@ -46,6 +49,7 @@ function EventDetail() {
                     </div>
                     {userIsOwner ? (
                         <div className='event-controls'>
+                            <InviteUserForm eventId={event._id} />
                             <button className='btn btn-edit'>Edit</button>
                             <button
                                 className='btn btn-delete'

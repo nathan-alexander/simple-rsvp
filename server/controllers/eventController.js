@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-
+const mongoose = require('mongoose')
 const Event = require('../models/eventModel')
 
 // @desc   Get events
@@ -79,9 +79,30 @@ const deleteEventById = asyncHandler(async (req, res) => {
         throw new Error('Something went wrong')
     }
 })
+
+const inviteUserToEvent = asyncHandler(async (req, res) => {
+    try {
+        await Event.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $addToSet: {
+                    usersInvited: mongoose.Types.ObjectId(req.params.userId),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+    } catch {
+        res.status(400)
+        throw new Error('Could not invite user to event')
+    }
+})
+
 module.exports = {
     createEvent,
     getEvents,
     getEventById,
     deleteEventById,
+    inviteUserToEvent,
 }

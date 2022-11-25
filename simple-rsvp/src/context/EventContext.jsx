@@ -46,6 +46,20 @@ function EventContextProvider({ children }) {
         const newEvents = events.filter((event) => event._id !== id)
         setEvents(newEvents)
     }
+
+    async function inviteUserToEvent(eventId, userId) {
+        const res = await fetch(`${url}/events/invite/${eventId}/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const data = await res.json()
+        console.log(data)
+        setEvents((prevEvents) => {
+            return [data, ...prevEvents]
+        })
+    }
     return (
         <EventContext.Provider
             value={{
@@ -54,6 +68,7 @@ function EventContextProvider({ children }) {
                 createEvent,
                 getEventById,
                 deleteEvent,
+                inviteUserToEvent,
             }}
         >
             {children}

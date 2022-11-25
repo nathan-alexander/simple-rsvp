@@ -51,6 +51,18 @@ function UserContextProvider({ children }) {
         }
     }
 
+    async function getUserById(id) {
+        const res = await fetch(`${url}/users/${id}`)
+        const data = await res.json()
+        return data
+    }
+
+    async function getUserByEmail(email) {
+        const res = await fetch(`${url}/users/email/${email}`)
+        const data = await res.json()
+        return data
+    }
+
     return (
         <UserContext.Provider
             value={{
@@ -63,6 +75,8 @@ function UserContextProvider({ children }) {
                 signupUser,
                 loginUser,
                 logoutUser,
+                getUserById,
+                getUserByEmail,
             }}
         >
             {children}

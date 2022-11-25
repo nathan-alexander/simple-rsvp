@@ -20,7 +20,10 @@ const userSchema = mongoose.Schema(
             type: String,
             required: [true, 'Please add a password'],
         },
-        events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+        eventsInvited: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+        eventsAttending: [
+            { type: mongoose.Schema.Types.ObjectId, ref: 'Event' },
+        ],
     },
     {
         timestamps: true,

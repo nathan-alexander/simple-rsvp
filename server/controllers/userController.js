@@ -94,6 +94,30 @@ const getUserEvents = asyncHandler(async (req, res) => {
     }
 })
 
+const getUserById = asyncHandler(async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
+    if (user) {
+        res.status(200).json(user)
+    } else {
+        res.status(400)
+        throw new Error('No user found')
+    }
+})
+
+const getUserByEmail = asyncHandler(async (req, res) => {
+    const user = await User.findOne({ email: req.params.email })
+    if (user) {
+        res.status(200).json(user)
+    } else {
+        res.status(400)
+        throw new Error('No user found')
+    }
+})
+
+const getEventsInvitedTo = asyncHandler(async (req, res) => {
+    //Find user
+})
+
 // Generate token
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -106,4 +130,7 @@ module.exports = {
     loginUser,
     getMe,
     getUserEvents,
+    getEventsInvitedTo,
+    getUserById,
+    getUserByEmail,
 }
