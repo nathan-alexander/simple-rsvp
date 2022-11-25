@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const User = require('../models/userModel')
 const Events = require('../models/eventModel')
+const { default: mongoose } = require('mongoose')
 // @desc   Register a new user
 // @route  /api/users
 // @access Public
@@ -81,7 +82,9 @@ const getMe = asyncHandler(async (req, res) => {
     }
     res.status(200).json(user)
 })
-
+// @desc   Get events the user is hosting
+// @route  /api/users/:id/events
+// @access Public
 const getUserEvents = asyncHandler(async (req, res) => {
     //Find user
     const user = await User.findOne({ _id: req.params.id })
@@ -93,7 +96,9 @@ const getUserEvents = asyncHandler(async (req, res) => {
         throw new Error('No user found')
     }
 })
-
+// @desc   Get user by id
+// @route  /api/users/:id/
+// @access Public
 const getUserById = asyncHandler(async (req, res) => {
     const user = await User.findOne({ _id: req.params.id })
     if (user) {
@@ -103,7 +108,9 @@ const getUserById = asyncHandler(async (req, res) => {
         throw new Error('No user found')
     }
 })
-
+// @desc   Get user by email
+// @route  /api/users/email/:email
+// @access Public
 const getUserByEmail = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.params.email })
     if (user) {
@@ -114,8 +121,102 @@ const getUserByEmail = asyncHandler(async (req, res) => {
     }
 })
 
+// @desc   Get events that the user is invited to
+// @route  /api/users/:id/events/invited
+// @access Public
 const getEventsInvitedTo = asyncHandler(async (req, res) => {
-    //Find user
+    try {
+        const userEvents = await User.findOne({ _id: req.params.id }).populate(
+            'eventsInvited'
+        )
+        res.status(200).json(userEvents)
+    } catch {
+        res.status(400)
+        throw new Error('Could not get events invited to')
+    }
+})
+// @desc   Get events that the user is attending
+// @route  /api/users/:id/events/attending
+// @access Public
+const getEventsAttending = asyncHandler(async (req, res) => {
+    try {
+        const attendingEvents = await user
+            .findOne({ _id: req.params.id })
+            .populate('eventsAttending')
+
+        res.status(200).json(attendingEvents)
+    } catch {
+        res.status(400)
+        throw new Error('Could not get events attending')
+    }
+})
+// @desc   Accept an invitation to an event
+// @route  /api/users/:id/events/:eventId/accept
+// @access Public
+const acceptEventInvitation = asyncHandler(async (req, res) => {
+    try {
+        await User.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $addToSet: {
+                    eventsAttending: mongoose.Types.ObjectId(
+                        req.params.eventId
+                    ),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+        await Events.findOneAndUpdate(
+            { _id: req.params.eventId },
+            {
+                $addToSet: {
+                    usersAttending: mongoose.Types.ObjectId(req.params.id),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+    } catch {
+        res.status(400)
+        throw new Error('Could not accept event invitation')
+    }
+})
+// @desc   Accept an invitation to an event
+// @route  /api/users/:id/events/:eventId/decline
+// @access Public
+const declineEventInvitation = asyncHandler(async (req, res) => {
+    try {
+        await User.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $pull: {
+                    eventsAttending: mongoose.Types.ObjectId(
+                        req.params.eventId
+                    ),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+        await Events.findOneAndUpdate(
+            { _id: req.params.eventId },
+            {
+                $pull: {
+                    usersAttending: mongoose.Types.ObjectId(req.params.id),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+    } catch {
+        res.status(400)
+        throw new Error('Could not accept event invitation')
+    }
 })
 
 // Generate token
@@ -133,4 +234,7 @@ module.exports = {
     getEventsInvitedTo,
     getUserById,
     getUserByEmail,
+    getEventsAttending,
+    acceptEventInvitation,
+    declineEventInvitation,
 }

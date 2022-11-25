@@ -63,6 +63,38 @@ function UserContextProvider({ children }) {
         return data
     }
 
+    async function getEventsInvitedTo(id) {
+        const res = await fetch(`${url}/users/${id}/invitations`)
+        const data = await res.json()
+        console.log(data)
+        return data
+    }
+
+    //acceptEventInvitation, declineEventInvitation
+    async function acceptEventInvitation(id, eventId) {
+        const res = await fetch(`${url}/users/${id}/events/${eventId}/accept`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const data = await res.json()
+        setUser(data)
+    }
+
+    async function declineEventInvitation(id, eventId) {
+        const res = await fetch(
+            `${url}/users/${id}/events/${eventId}/decline`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        )
+        const data = await res.json()
+        setUser(data)
+    }
     return (
         <UserContext.Provider
             value={{
@@ -77,6 +109,9 @@ function UserContextProvider({ children }) {
                 logoutUser,
                 getUserById,
                 getUserByEmail,
+                getEventsInvitedTo,
+                acceptEventInvitation,
+                declineEventInvitation,
             }}
         >
             {children}

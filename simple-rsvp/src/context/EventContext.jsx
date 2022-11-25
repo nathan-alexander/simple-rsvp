@@ -55,10 +55,21 @@ function EventContextProvider({ children }) {
             },
         })
         const data = await res.json()
-        console.log(data)
         setEvents((prevEvents) => {
             return [data, ...prevEvents]
         })
+    }
+
+    async function getInvitedUsers(id) {
+        const res = await fetch(`${url}/events/${id}/invited`)
+        const data = await res.json()
+        return data
+    }
+
+    async function getAttendingUsers(id) {
+        const res = await fetch(`${url}/events/${id}/attending`)
+        const data = await res.json()
+        return data
     }
     return (
         <EventContext.Provider
@@ -69,6 +80,8 @@ function EventContextProvider({ children }) {
                 getEventById,
                 deleteEvent,
                 inviteUserToEvent,
+                getInvitedUsers,
+                getAttendingUsers,
             }}
         >
             {children}

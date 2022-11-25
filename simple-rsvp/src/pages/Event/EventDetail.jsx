@@ -7,11 +7,17 @@ import InviteUserForm from './InviteUserForm'
 function EventDetail() {
     const [event, setEvent] = useState()
     const [userIsOwner, setUserIsOwner] = useState(false)
+    const [invited, setInvited] = useState([])
+    const [attendees, setAttendees] = useState([])
     const { id } = useParams()
-    const { getEventById, deleteEvent, inviteUserToEvent } =
+    const { getEventById, deleteEvent, getInvitedUsers, getAttendingUsers } =
         useContext(EventContext)
     const { user, getUserById } = useContext(UserContext)
     const navigate = useNavigate()
+
+    let invitedUsersElements
+    let attendingUserElements
+
     useEffect(() => {
         //This is going to be a more complex event type with more detail.
         //Will have to poll a map api to get lat,lon and display a map.
@@ -20,6 +26,10 @@ function EventDetail() {
         async function getEvent() {
             const data = await getEventById(id)
             setEvent(data)
+            const invitedUsers = await getInvitedUsers(data._id)
+            setInvited(invitedUsers.usersInvited)
+            const attendingUsers = await getAttendingUsers(data._id)
+            setAttendees(attendingUsers.usersAttending)
         }
         getEvent()
     }, [])
@@ -35,7 +45,18 @@ function EventDetail() {
         deleteEvent(id)
         navigate('/')
     }
+    //Refactor into its own component
+    if (invited.length > 0) {
+        invitedUsersElements = invited.map((user) => {
+            return <div key={user._id}>{user.name}</div>
+        })
+    }
 
+    if (attendees.length > 0) {
+        attendingUserElements = attendees.map((user) => {
+            return <div key={user._id}>{user.name}</div>
+        })
+    }
     return (
         <div className='event-detail-container'>
             {event ? (
@@ -46,6 +67,14 @@ function EventDetail() {
                             {event.description}
                         </div>
                         <div className='event-host'></div>
+                        <div className='invited-users'>
+                            <p>Invited Users</p>
+                            {invitedUsersElements}
+                        </div>
+                        <div className='attending-users'>
+                            <p>Attending Users</p>
+                            {attendingUserElements}
+                        </div>
                     </div>
                     {userIsOwner ? (
                         <div className='event-controls'>

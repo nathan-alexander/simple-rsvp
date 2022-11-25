@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const mongoose = require('mongoose')
 const Event = require('../models/eventModel')
+const User = require('../models/userModel')
 
 // @desc   Get events
 // @route  /api/events
@@ -93,9 +94,45 @@ const inviteUserToEvent = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
+        await User.findOneAndUpdate(
+            { _id: req.params.userId },
+            {
+                $addToSet: {
+                    eventsInvited: mongoose.Types.ObjectId(req.params.id),
+                },
+            },
+            {
+                new: true,
+            }
+        )
     } catch {
         res.status(400)
         throw new Error('Could not invite user to event')
+    }
+})
+
+const getEventInvitedUsers = asyncHandler(async (req, res) => {
+    //potentially move this to userController. Go the other way and find the users where the eventId is present.
+    try {
+        const eventUsers = await Event.findOne({ _id: req.params.id }).populate(
+            'usersInvited'
+        )
+        res.status(200).json(eventUsers)
+    } catch {
+        res.status(400)
+        throw new Error('Could not get invited users')
+    }
+})
+
+const getEventAttendingUsers = asyncHandler(async (req, res) => {
+    try {
+        const eventAttendingUsers = await Event.findOne({
+            _id: req.params.id,
+        }).populate('usersAttending')
+        res.status(200).json(eventAttendingUsers)
+    } catch {
+        res.status(400)
+        throw new Error('Could not get attending users')
     }
 })
 
@@ -105,4 +142,6 @@ module.exports = {
     getEventById,
     deleteEventById,
     inviteUserToEvent,
+    getEventInvitedUsers,
+    getEventAttendingUsers,
 }
