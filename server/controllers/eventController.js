@@ -19,13 +19,24 @@ const getEvents = asyncHandler(async (req, res) => {
 // @access Public
 // @method GET
 const createEvent = asyncHandler(async (req, res) => {
-    const { name, description, userId, location, startDate, endDate, public } =
-        req.body
+    const {
+        name,
+        description,
+        userId,
+        location,
+        latitude,
+        longitude,
+        startDate,
+        endDate,
+        public,
+    } = req.body
     if (
         !name ||
         !description ||
         !userId ||
         !location ||
+        !latitude ||
+        !longitude ||
         !startDate ||
         !endDate ||
         !public
@@ -39,6 +50,8 @@ const createEvent = asyncHandler(async (req, res) => {
         description,
         userId,
         location,
+        latitude,
+        longitude,
         startDate,
         endDate,
         public,
@@ -51,6 +64,8 @@ const createEvent = asyncHandler(async (req, res) => {
             description: event.description,
             userId: event.userId,
             location: event.location,
+            latitude: event.latitude,
+            longitude: event.longitude,
             startDate: event.startDate,
             endDate: event.endDate,
             public: event.public,
@@ -80,7 +95,57 @@ const deleteEventById = asyncHandler(async (req, res) => {
         throw new Error('Something went wrong')
     }
 })
-
+const uninviteUserFromEvent = asyncHandler(async (req, res) => {
+    try {
+        await Event.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $pull: {
+                    usersInvited: mongoose.Types.ObjectId(req.params.userId),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+        await Event.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $pull: {
+                    usersAttending: mongoose.Types.ObjectId(req.params.userId),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+        await User.findOneAndUpdate(
+            { _id: req.params.userId },
+            {
+                $pull: {
+                    eventsInvited: mongoose.Types.ObjectId(req.params.id),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+        await User.findOneAndUpdate(
+            { _id: req.params.userId },
+            {
+                $pull: {
+                    eventsAttending: mongoose.Types.ObjectId(req.params.id),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+    } catch {
+        res.status(400)
+        throw new Error('Could not uninvite user from event')
+    }
+})
 const inviteUserToEvent = asyncHandler(async (req, res) => {
     try {
         await Event.findOneAndUpdate(
@@ -136,6 +201,18 @@ const getEventAttendingUsers = asyncHandler(async (req, res) => {
     }
 })
 
+const getEventsNearby = asyncHandler(async (req, res) => {
+    let lat = req.query.lat
+    let lon = req.query.lon
+    let radius = req.query.radius
+    try {
+        res.status(200).json('found')
+    } catch {
+        res.status(400)
+        throw new Error('Could not get nearby events')
+    }
+})
+
 module.exports = {
     createEvent,
     getEvents,
@@ -144,4 +221,6 @@ module.exports = {
     inviteUserToEvent,
     getEventInvitedUsers,
     getEventAttendingUsers,
+    uninviteUserFromEvent,
+    getEventsNearby,
 }

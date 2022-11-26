@@ -36,6 +36,14 @@ const eventSchema = mongoose.Schema(
                 required: true,
             },
         },
+        latitude: {
+            type: Number,
+            required: true,
+        },
+        longitude: {
+            type: Number,
+            required: true,
+        },
         startDate: {
             type: Date,
             required: true,
@@ -50,6 +58,7 @@ const eventSchema = mongoose.Schema(
         },
         usersInvited: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
         usersAttending: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+        usersDeclined: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     },
     {
         timestamps: true,

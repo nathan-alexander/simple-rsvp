@@ -1,7 +1,9 @@
 import { useState, useContext } from 'react'
+import { format } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import { EventContext } from '../../context/EventContext'
 import { UserContext } from '../../context/UserContext'
+import getCoordinatesFromAddress from '../../utils/geocoding'
 function CreateEvent() {
     //TODO: Add lat/lon capability
     const [newEvent, setNewEvent] = useState({
@@ -11,8 +13,8 @@ function CreateEvent() {
         city: '',
         state: '',
         zip: '',
-        startDate: undefined,
-        endDate: undefined,
+        startDate: new Date(),
+        endDate: new Date(),
         public: true,
     })
     const { createEvent } = useContext(EventContext)
@@ -28,7 +30,7 @@ function CreateEvent() {
         }))
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
         const eventObject = {
             name: newEvent.name,
@@ -39,12 +41,17 @@ function CreateEvent() {
                 state: newEvent.state,
                 zip: newEvent.zip,
             },
+            latitude: '',
+            longitude: '',
             startDate: newEvent.startDate,
             endDate: newEvent.endDate,
             public: newEvent.public,
             userId: user._id,
         }
-        console.log(eventObject)
+        let coordinates = await getCoordinatesFromAddress(eventObject.location)
+        eventObject.latitude = coordinates.lat
+        eventObject.longitude = coordinates.lng
+
         createEvent(eventObject)
         navigate('/')
     }
@@ -73,6 +80,7 @@ function CreateEvent() {
                     value={newEvent.startDate}
                     onChange={handleOnChange}
                     name='startDate'
+                    className='text-input'
                 />
                 <input
                     type='date'
@@ -80,6 +88,7 @@ function CreateEvent() {
                     value={newEvent.endDate}
                     onChange={handleOnChange}
                     name='endDate'
+                    className='text-input'
                 />
                 <input
                     type='text'

@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 const Events = require('../models/eventModel')
 const { default: mongoose } = require('mongoose')
+const { async } = require('rxjs')
 // @desc   Register a new user
 // @route  /api/users
 // @access Public
@@ -158,16 +159,32 @@ const acceptEventInvitation = asyncHandler(async (req, res) => {
         await User.findOneAndUpdate(
             { _id: req.params.id },
             {
-                $addToSet: {
-                    eventsAttending: mongoose.Types.ObjectId(
-                        req.params.eventId
-                    ),
+                $pull: {
+                    eventsDeclined: mongoose.Types.ObjectId(req.params.eventId),
                 },
-            },
-            {
-                new: true,
             }
-        )
+        ),
+            await Events.findOneAndUpdate(
+                { _id: req.params.id },
+                {
+                    $pull: {
+                        usersDeclined: mongoose.Types.ObjectId(req.params.id),
+                    },
+                }
+            ),
+            await User.findOneAndUpdate(
+                { _id: req.params.id },
+                {
+                    $addToSet: {
+                        eventsAttending: mongoose.Types.ObjectId(
+                            req.params.eventId
+                        ),
+                    },
+                },
+                {
+                    new: true,
+                }
+            )
         await Events.findOneAndUpdate(
             { _id: req.params.eventId },
             {
@@ -197,9 +214,6 @@ const declineEventInvitation = asyncHandler(async (req, res) => {
                         req.params.eventId
                     ),
                 },
-            },
-            {
-                new: true,
             }
         )
         await Events.findOneAndUpdate(
@@ -208,6 +222,25 @@ const declineEventInvitation = asyncHandler(async (req, res) => {
                 $pull: {
                     usersAttending: mongoose.Types.ObjectId(req.params.id),
                 },
+            }
+        )
+        await User.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $addToSet: {
+                    eventsDeclined: mongoose.Types.ObjectId(req.params.eventId),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+        await Events.findOneAndUpdate(
+            { _id: req.params.eventId },
+            {
+                $addToSet: {
+                    usersDeclined: mongoose.Types.ObjectId(req.params.id),
+                },
             },
             {
                 new: true,
@@ -215,7 +248,7 @@ const declineEventInvitation = asyncHandler(async (req, res) => {
         )
     } catch {
         res.status(400)
-        throw new Error('Could not accept event invitation')
+        throw new Error('Could not decline event invitation')
     }
 })
 

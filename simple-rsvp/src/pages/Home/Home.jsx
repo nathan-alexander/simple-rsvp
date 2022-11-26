@@ -22,7 +22,7 @@ function Home() {
         if (user) {
             getEventsHostedByUser(user._id)
         }
-    }, [user])
+    }, [user, events])
     return (
         <div className='home'>
             {user ? (

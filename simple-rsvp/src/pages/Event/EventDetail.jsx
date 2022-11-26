@@ -10,9 +10,14 @@ function EventDetail() {
     const [invited, setInvited] = useState([])
     const [attendees, setAttendees] = useState([])
     const { id } = useParams()
-    const { getEventById, deleteEvent, getInvitedUsers, getAttendingUsers } =
-        useContext(EventContext)
-    const { user, getUserById } = useContext(UserContext)
+    const {
+        getEventById,
+        deleteEvent,
+        getInvitedUsers,
+        getAttendingUsers,
+        uninviteUserFromEvent,
+    } = useContext(EventContext)
+    const { user } = useContext(UserContext)
     const navigate = useNavigate()
 
     let invitedUsersElements
@@ -32,7 +37,7 @@ function EventDetail() {
             setAttendees(attendingUsers.usersAttending)
         }
         getEvent()
-    }, [])
+    }, [invited, attendees])
 
     useEffect(() => {
         //Create a function to get all users in the usersInvited array and display them here
@@ -45,10 +50,27 @@ function EventDetail() {
         deleteEvent(id)
         navigate('/')
     }
+
+    async function handleUninvite(eventId, userId) {
+        uninviteUserFromEvent(eventId, userId)
+        const invitedUsers = await getInvitedUsers(event._id)
+        setInvited(invitedUsers.usersInvited)
+    }
     //Refactor into its own component
     if (invited.length > 0) {
         invitedUsersElements = invited.map((user) => {
-            return <div key={user._id}>{user.name}</div>
+            return (
+                <div key={user._id}>
+                    {user.name}
+                    {userIsOwner && (
+                        <button
+                            onClick={() => handleUninvite(event._id, user._id)}
+                        >
+                            Uninvite
+                        </button>
+                    )}
+                </div>
+            )
         })
     }
 

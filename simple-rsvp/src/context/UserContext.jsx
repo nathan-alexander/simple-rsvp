@@ -66,7 +66,6 @@ function UserContextProvider({ children }) {
     async function getEventsInvitedTo(id) {
         const res = await fetch(`${url}/users/${id}/invitations`)
         const data = await res.json()
-        console.log(data)
         return data
     }
 

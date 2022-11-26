@@ -24,6 +24,9 @@ const userSchema = mongoose.Schema(
         eventsAttending: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'Event' },
         ],
+        eventsDeclined: [
+            { type: mongoose.Schema.Types.ObjectId, ref: 'Event' },
+        ],
     },
     {
         timestamps: true,

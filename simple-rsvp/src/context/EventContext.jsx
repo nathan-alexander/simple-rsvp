@@ -24,6 +24,14 @@ function EventContextProvider({ children }) {
         return data
     }
 
+    async function getEventsNearby(lat, lon, radiusMiles) {
+        const res = await fetch(
+            `${url}/events/nearby/find?lat=${lat}?lon=${lon}?radius=${radiusMiles}`
+        )
+        const data = await res.json()
+        return data
+    }
+
     async function createEvent(event) {
         const res = await fetch(`${url}/events`, {
             method: 'POST',
@@ -60,6 +68,19 @@ function EventContextProvider({ children }) {
         })
     }
 
+    async function uninviteUserFromEvent(eventId, userId) {
+        const res = await fetch(`${url}/events/uninvite/${eventId}/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const data = await res.json()
+        setEvents((prevEvents) => {
+            return [data, ...prevEvents]
+        })
+    }
+
     async function getInvitedUsers(id) {
         const res = await fetch(`${url}/events/${id}/invited`)
         const data = await res.json()
@@ -82,6 +103,8 @@ function EventContextProvider({ children }) {
                 inviteUserToEvent,
                 getInvitedUsers,
                 getAttendingUsers,
+                uninviteUserFromEvent,
+                getEventsNearby,
             }}
         >
             {children}

@@ -10,6 +10,7 @@ function Login() {
     const { user, loginUser, message } = useContext(UserContext)
     function handleSubmit(e) {
         e.preventDefault()
+        console.log('hello')
         loginUser(formData)
     }
 
