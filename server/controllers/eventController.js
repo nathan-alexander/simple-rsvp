@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler')
 const mongoose = require('mongoose')
 const Event = require('../models/eventModel')
 const User = require('../models/userModel')
-
+const { getDistanceBetween } = require('../utils/getDistanceBetween')
 // @desc   Get events
 // @route  /api/events
 // @access Public
@@ -205,8 +205,30 @@ const getEventsNearby = asyncHandler(async (req, res) => {
     let lat = req.query.lat
     let lon = req.query.lon
     let radius = req.query.radius
+    //get all events
+    //loop thru the events, performing a calculation on lat lon (need a utils)
+    //if calculation is less than radius, return it
+    console.log(lat)
+    console.log(lon)
+    console.log(radius)
     try {
-        res.status(200).json('found')
+        const allEvents = await Event.find().lean()
+        let matchingEvents = []
+        for (let event of allEvents) {
+            const distance = getDistanceBetween(
+                lat,
+                lon,
+                event.latitude,
+                event.longitude
+            )
+            if (distance <= radius) {
+                matchingEvents.push({
+                    ...event,
+                    distance,
+                })
+            }
+        }
+        res.status(200).json(matchingEvents)
     } catch {
         res.status(400)
         throw new Error('Could not get nearby events')

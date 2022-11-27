@@ -26,7 +26,7 @@ function EventContextProvider({ children }) {
 
     async function getEventsNearby(lat, lon, radiusMiles) {
         const res = await fetch(
-            `${url}/events/nearby/find?lat=${lat}?lon=${lon}?radius=${radiusMiles}`
+            `${url}/events/nearby/find?lat=${lat}&lon=${lon}&radius=${radiusMiles}`
         )
         const data = await res.json()
         return data

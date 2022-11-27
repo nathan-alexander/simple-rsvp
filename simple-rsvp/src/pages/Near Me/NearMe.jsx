@@ -13,13 +13,15 @@ function NearMe() {
         latitude: '',
         longitude: '',
     })
+    const [nearbyEvents, setNearbyEvents] = useState([])
     const [message, setMessage] = useState(undefined)
     const [isLoading, setIsLoading] = useState(true)
     //Going to need to create a method to get all events based on lat lon
-    const {} = useContext(EventContext)
+    const { getEventsNearby } = useContext(EventContext)
 
     useEffect(() => {
         //Probably refactor into a util
+        //May need to have a return function on this to stop infinite re render
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition((position) => {
                 if (position) {
@@ -27,17 +29,23 @@ function NearMe() {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
                     })
+                    nearby(
+                        position.coords.latitude,
+                        position.coords.longitude,
+                        5
+                    )
+                    setIsLoading(false)
                 }
-                setMessage(
-                    `Your location is ${userLocation.latitude}, ${userLocation.longitude}`
-                )
-                setIsLoading(false)
             })
         } else {
             setMessage('Geolocation not enabled, please enter your ZIP code')
             setIsLoading(false)
         }
-    }, [userLocation])
+    }, [])
+    async function nearby(lat, lon, radius) {
+        const nearby = await getEventsNearby(lat, lon, radius)
+        setNearbyEvents(nearby)
+    }
     if (!isLoading) {
         return <div>{message && <p>{message}</p>}</div>
     } else {
