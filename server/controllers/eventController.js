@@ -208,9 +208,6 @@ const getEventsNearby = asyncHandler(async (req, res) => {
     //get all events
     //loop thru the events, performing a calculation on lat lon (need a utils)
     //if calculation is less than radius, return it
-    console.log(lat)
-    console.log(lon)
-    console.log(radius)
     try {
         const allEvents = await Event.find().lean()
         let matchingEvents = []

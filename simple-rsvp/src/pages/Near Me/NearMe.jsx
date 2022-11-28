@@ -9,41 +9,38 @@
 import { useState, useEffect, useContext } from 'react'
 import { EventContext } from '../../context/EventContext'
 import Event from '../../shared/Event'
+import useGeolocation from '../../hooks/useGeolocation'
+import { getCoordinatesFromZIP } from '../../utils/geocoding'
 
 function NearMe() {
-    const [userLocation, setUserLocation] = useState({
-        latitude: '',
-        longitude: '',
-    })
     const [nearbyEvents, setNearbyEvents] = useState([])
-    const [message, setMessage] = useState(undefined)
-    const [isLoading, setIsLoading] = useState(true)
+    const [zip, setZip] = useState('')
     const { getEventsNearby } = useContext(EventContext)
+    const location = useGeolocation()
     let eventElements
     useEffect(() => {
-        if ('geolocation' in navigator) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                if (position) {
-                    setUserLocation({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    })
-                    nearby(
-                        position.coords.latitude,
-                        position.coords.longitude,
-                        5
-                    )
-                    setIsLoading(false)
-                }
-            })
-        } else {
-            setMessage('Geolocation not enabled, please enter your ZIP code')
-            setIsLoading(false)
+        if (location.loaded && !location.error) {
+            nearby(
+                location.coordinates.latitude,
+                location.coordinates.longitude,
+                5
+            )
         }
-    }, [])
+    }, [location])
+
     async function nearby(lat, lon, radius) {
         const nearby = await getEventsNearby(lat, lon, radius)
         setNearbyEvents(nearby)
+    }
+
+    function handleChange(e) {
+        setZip(e.target.value)
+    }
+
+    async function submitZip(e) {
+        e.preventDefault()
+        let coordinates = await getCoordinatesFromZIP(zip)
+        nearby(coordinates.lat, coordinates.lng, 5)
     }
 
     if (nearbyEvents.length > 0) {
@@ -51,8 +48,26 @@ function NearMe() {
             return <Event key={event._id} event={event} />
         })
     }
-    if (!isLoading) {
+    if (location.loaded && !location.error) {
         return <div>{eventElements}</div>
+    } else if (location.loaded && location.error) {
+        return (
+            <div>
+                <div className='near-me-zip'>
+                    <h3>Enter ZIP</h3>
+                    <form onSubmit={submitZip}>
+                        <input
+                            type='text'
+                            name='zip'
+                            value={zip}
+                            onChange={handleChange}
+                        />
+                        <button type='submit'>Go</button>
+                    </form>
+                </div>
+                {eventElements && eventElements}
+            </div>
+        )
     } else {
         return <div>Loading...</div>
     }

@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import { EventContext } from '../../context/EventContext'
 import { UserContext } from '../../context/UserContext'
-import getCoordinatesFromAddress from '../../utils/geocoding'
+import { getCoordinatesFromAddress } from '../../utils/geocoding'
 function CreateEvent() {
     //TODO: Add lat/lon capability
     const [newEvent, setNewEvent] = useState({

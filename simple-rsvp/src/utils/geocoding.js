@@ -10,4 +10,12 @@ async function getCoordinatesFromAddress(address) {
     return data.results[0].geometry.location
 }
 
-export default getCoordinatesFromAddress
+async function getCoordinatesFromZIP(zip) {
+    let response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?key=${API_KEY}&components=postal_code:${zip}`
+    )
+    let data = await response.json()
+    return data.results[0].geometry.location
+}
+
+export { getCoordinatesFromAddress, getCoordinatesFromZIP }
