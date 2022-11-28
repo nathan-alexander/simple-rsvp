@@ -8,6 +8,8 @@
 
 import { useState, useEffect, useContext } from 'react'
 import { EventContext } from '../../context/EventContext'
+import Event from '../../shared/Event'
+
 function NearMe() {
     const [userLocation, setUserLocation] = useState({
         latitude: '',
@@ -16,12 +18,9 @@ function NearMe() {
     const [nearbyEvents, setNearbyEvents] = useState([])
     const [message, setMessage] = useState(undefined)
     const [isLoading, setIsLoading] = useState(true)
-    //Going to need to create a method to get all events based on lat lon
     const { getEventsNearby } = useContext(EventContext)
-
+    let eventElements
     useEffect(() => {
-        //Probably refactor into a util
-        //May need to have a return function on this to stop infinite re render
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition((position) => {
                 if (position) {
@@ -46,8 +45,14 @@ function NearMe() {
         const nearby = await getEventsNearby(lat, lon, radius)
         setNearbyEvents(nearby)
     }
+
+    if (nearbyEvents.length > 0) {
+        eventElements = nearbyEvents.map((event) => {
+            return <Event key={event._id} event={event} />
+        })
+    }
     if (!isLoading) {
-        return <div>{message && <p>{message}</p>}</div>
+        return <div>{eventElements}</div>
     } else {
         return <div>Loading...</div>
     }

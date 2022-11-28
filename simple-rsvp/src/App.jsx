@@ -34,6 +34,7 @@ function App() {
                     <Route path='/signup' element={<Signup />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/event/:id' element={<EventDetail />} />
+                    <Route path='/nearme/event/:id' element={<EventDetail />} />
                 </Routes>
             </div>
         </div>
