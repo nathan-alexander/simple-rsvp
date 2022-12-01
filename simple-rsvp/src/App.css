@@ -209,3 +209,9 @@ a:visited {
     height: 200px;
     width: 200px;
 }
+
+.profile-image-small {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
