@@ -1,7 +1,8 @@
 import { useState, useContext, useEffect } from 'react'
 import { EventContext } from '../../context/EventContext'
 import { UserContext } from '../../context/UserContext'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 function EventInvitation(props) {
     const [userDecision, setUserDecision] = useState()
     //const { getEventById } = useContext(EventContext)
@@ -32,14 +33,37 @@ function EventInvitation(props) {
         declineEventInvitation(user._id, props.event._id)
         setUserDecision('Declined')
     }
+
+    function decisionMessage() {
+        if (userDecision === 'Attending') {
+            return <p>You are attending this event</p>
+        } else if (userDecision === 'Declined') {
+            return <p>You declined this event</p>
+        } else {
+            return <p>Please make a decision</p>
+        }
+    }
     return (
         <div className='event-invitation'>
-            {props.event.name}
+            <h3>{props.event.name}</h3>
+            {decisionMessage()}
             {userDecision !== 'Attending' && (
-                <button onClick={handleAccept}>Accept Invitation</button>
+                <div onClick={handleAccept}>
+                    <FontAwesomeIcon
+                        icon={faCheck}
+                        size='2x'
+                        className='accept-icon'
+                    />
+                </div>
             )}
             {userDecision !== 'Declined' && (
-                <button onClick={handleDecline}>Decline Invitation</button>
+                <div onClick={handleDecline}>
+                    <FontAwesomeIcon
+                        icon={faTimes}
+                        size='2x'
+                        className='decline-icon'
+                    />
+                </div>
             )}
         </div>
     )

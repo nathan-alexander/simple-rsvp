@@ -27,6 +27,9 @@ const userSchema = mongoose.Schema(
         eventsDeclined: [
             { type: mongoose.Schema.Types.ObjectId, ref: 'Event' },
         ],
+        profileImageUrl: {
+            type: String,
+        },
     },
     {
         timestamps: true,

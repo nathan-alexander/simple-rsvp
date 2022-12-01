@@ -1,8 +1,8 @@
 :root {
     --font-xl: 1.25rem;
-    --font-lg: 1rem;
-    --font-reg: 0.75rem;
-    --font-sm: 0.5rem;
+    --font-lg: 1.15rem;
+    --font-reg: 1rem;
+    --font-sm: 0.75rem;
 
     --font-clr-subtext: #777;
     --font-clr-public: darkgreen;
@@ -13,10 +13,10 @@
 
 @media (min-width: 400px) {
     :root {
-        --font-xl: 2rem;
-        --font-lg: 1.5rem;
+        --font-xl: 1.75rem;
+        --font-lg: 1.25rem;
         --font-reg: 1rem;
-        --font-sm: 0.5rem;
+        --font-sm: 0.75rem;
     }
 
     .app-container {
@@ -73,51 +73,36 @@ a:visited {
 }
 
 .event {
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 1em;
+    border-bottom: 1px solid gray;
     margin: 1em;
 }
 
 .event-header {
     display: flex;
     justify-content: space-between;
+    font-size: var(--font-sm);
+    background-color: lightblue;
+    margin-bottom: 1em;
+}
+.event-name,
+.event-description {
+    margin-bottom: 8px;
+}
+.public-text,
+.event-host,
+.event-name,
+.event-description {
+    padding: 0 16px;
+}
+
+.event-name {
     font-size: var(--font-lg);
 }
 
-.public-text {
-    font-size: var(--font-reg);
-}
-
-.event-description,
-.event-location {
-    font-size: var(--font-reg);
-}
-
+.public-text,
+.event-host,
 .event-description {
-    margin-bottom: 1em;
-}
-.event-location {
-    display: flex;
-    flex-direction: column;
-}
-
-.event-subaddress {
-    margin-top: -5px;
-}
-.event-subaddress > p {
-    margin-right: 5px;
-    display: inline-block;
-    font-size: var(--font-sm);
-    color: var(--font-clr-subtext);
-}
-
-.event-public {
-    color: var(--font-clr-public);
-}
-
-.event-private {
-    color: var(--font-clr-private);
+    font-size: var(--font-reg);
 }
 
 .event-detail-container {
@@ -196,4 +181,31 @@ a:visited {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.event-invitation {
+    border: 1px solid red;
+    margin: 1em;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.accept-icon {
+    background-color: lightgreen;
+    color: white;
+    padding: 16px;
+    border-radius: 50%;
+}
+
+.decline-icon {
+    background-color: coral;
+    color: white;
+    padding: 16px;
+    border-radius: 50%;
+}
+
+.profile-image {
+    height: 200px;
+    width: 200px;
 }

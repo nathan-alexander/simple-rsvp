@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { EventContext } from '../../context/EventContext'
 import { UserContext } from '../../context/UserContext'
 import { getCoordinatesFromAddress } from '../../utils/geocoding'
+import { useEffect } from 'react'
 function CreateEvent() {
-    //TODO: Add lat/lon capability
     const [newEvent, setNewEvent] = useState({
         name: '',
         description: '',
@@ -13,13 +13,20 @@ function CreateEvent() {
         city: '',
         state: '',
         zip: '',
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: formatDate(),
+        endDate: formatDate(),
         public: true,
     })
     const { createEvent } = useContext(EventContext)
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
+    function formatDate() {
+        const now = new Date()
+        const offsetMs = now.getTimezoneOffset() * 60 * 1000
+        const dateLocal = new Date(now.getTime() - offsetMs)
+        const str = dateLocal.toISOString().slice(0, 16).replace(/-/g, '-')
+        return str
+    }
     function handleOnChange(e) {
         setNewEvent((prevState) => ({
             ...prevState,
@@ -48,6 +55,7 @@ function CreateEvent() {
             public: newEvent.public,
             userId: user._id,
         }
+        console.log(eventObject)
         let coordinates = await getCoordinatesFromAddress(eventObject.location)
         eventObject.latitude = coordinates.lat
         eventObject.longitude = coordinates.lng
@@ -75,7 +83,7 @@ function CreateEvent() {
                     className='text-input'
                 />
                 <input
-                    type='date'
+                    type='datetime-local'
                     placeholder='Start Date'
                     value={newEvent.startDate}
                     onChange={handleOnChange}
@@ -83,7 +91,7 @@ function CreateEvent() {
                     className='text-input'
                 />
                 <input
-                    type='date'
+                    type='datetime-local'
                     placeholder='End Date'
                     value={newEvent.endDate}
                     onChange={handleOnChange}

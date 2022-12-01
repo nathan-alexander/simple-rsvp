@@ -22,7 +22,11 @@ function Invitations() {
             return <EventInvitation key={event._id} event={event} />
         })
     }
-    return <div>{eventElements}</div>
+    if (eventElements) {
+        return <div>{eventElements}</div>
+    } else {
+        return <div>No invitations</div>
+    }
 }
 
 export default Invitations

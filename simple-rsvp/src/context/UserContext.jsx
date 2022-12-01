@@ -51,6 +51,19 @@ function UserContextProvider({ children }) {
         }
     }
 
+    async function updateUser(user) {
+        const res = await fetch(`${url}/users/${user._id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: user._id,
+                profileImageUrl: user.profileImageUrl,
+            }),
+        })
+        const data = await res.json()
+        setUser(data)
+    }
+
     async function getUserById(id) {
         const res = await fetch(`${url}/users/${id}`)
         const data = await res.json()
@@ -111,6 +124,7 @@ function UserContextProvider({ children }) {
                 getEventsInvitedTo,
                 acceptEventInvitation,
                 declineEventInvitation,
+                updateUser,
             }}
         >
             {children}

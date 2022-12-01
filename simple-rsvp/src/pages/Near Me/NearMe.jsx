@@ -1,11 +1,4 @@
-//Request user location or have the user input a ZIP
-//On ZIP submission or user location obtain, get the Lat/Lon of the location
 //Start with 5 mile radius, refactor to add in additional options
-//Calculate all latlon within 5 miles of the user given location? (There may be a better way here)
-//Query database to return events within the given radius, transform into an object that also holds the distance away for filtering
-
-//Need to refactor CreateEvent to query Google Maps to store the Lat/Lon of the event and store those details in the Event Model.
-
 import { useState, useEffect, useContext } from 'react'
 import { EventContext } from '../../context/EventContext'
 import Event from '../../shared/Event'
@@ -15,6 +8,7 @@ import { getCoordinatesFromZIP } from '../../utils/geocoding'
 function NearMe() {
     const [nearbyEvents, setNearbyEvents] = useState([])
     const [zip, setZip] = useState('')
+    const [message, setMessage] = useState(null)
     const { getEventsNearby } = useContext(EventContext)
     const location = useGeolocation()
     let eventElements
@@ -25,6 +19,7 @@ function NearMe() {
                 location.coordinates.longitude,
                 5
             )
+            setMessage('Events nearby')
         }
     }, [location])
 
@@ -39,8 +34,14 @@ function NearMe() {
 
     async function submitZip(e) {
         e.preventDefault()
-        let coordinates = await getCoordinatesFromZIP(zip)
-        nearby(coordinates.lat, coordinates.lng, 5)
+        const isValidZip = /^\b\d{5}(-\d{4})?\b$/.test(zip)
+        if (isValidZip) {
+            let coordinates = await getCoordinatesFromZIP(zip)
+            nearby(coordinates.lat, coordinates.lng, 5)
+            setMessage(`Events near ${zip}`)
+        } else {
+            setMessage('Please enter a valid ZIP')
+        }
     }
 
     if (nearbyEvents.length > 0) {
@@ -49,12 +50,18 @@ function NearMe() {
         })
     }
     if (location.loaded && !location.error) {
-        return <div>{eventElements}</div>
+        return (
+            <div>
+                {message && <h1>{message}</h1>}
+                {eventElements}
+            </div>
+        )
     } else if (location.loaded && location.error) {
         return (
             <div>
                 <div className='near-me-zip'>
                     <h3>Enter ZIP</h3>
+                    {message && <p>{message}</p>}
                     <form onSubmit={submitZip}>
                         <input
                             type='text'

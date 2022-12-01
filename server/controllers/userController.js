@@ -73,7 +73,28 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new Error('Invalid credentials')
     }
 })
+const updateUser = asyncHandler(async (req, res) => {
+    User.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+            $set: {
+                profileImageUrl: req.body.profileImageUrl,
+            },
+        },
+        {
+            new: true,
+        },
+        (err, user) => {
+            if (err) {
+                console.log(err)
+                res.status(400)
+                throw new Error('Could not update user')
+            }
 
+            res.status(200).json(user)
+        }
+    )
+})
 const getMe = asyncHandler(async (req, res) => {
     const user = {
         id: req.user._id,
@@ -270,4 +291,5 @@ module.exports = {
     getEventsAttending,
     acceptEventInvitation,
     declineEventInvitation,
+    updateUser,
 }
