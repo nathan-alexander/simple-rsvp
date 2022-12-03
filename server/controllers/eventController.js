@@ -96,8 +96,9 @@ const deleteEventById = asyncHandler(async (req, res) => {
     }
 })
 const uninviteUserFromEvent = asyncHandler(async (req, res) => {
+    //Return only the event
     try {
-        await Event.findOneAndUpdate(
+        let pullEventInvitedPromise = await Event.findOneAndUpdate(
             { _id: req.params.id },
             {
                 $pull: {
@@ -108,7 +109,7 @@ const uninviteUserFromEvent = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
-        await Event.findOneAndUpdate(
+        let pullEventAttendingPromise = await Event.findOneAndUpdate(
             { _id: req.params.id },
             {
                 $pull: {
@@ -119,7 +120,7 @@ const uninviteUserFromEvent = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
-        await User.findOneAndUpdate(
+        let pullUserInvitedPromise = await User.findOneAndUpdate(
             { _id: req.params.userId },
             {
                 $pull: {
@@ -130,7 +131,7 @@ const uninviteUserFromEvent = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
-        await User.findOneAndUpdate(
+        let pullUserAttendingPromise = await User.findOneAndUpdate(
             { _id: req.params.userId },
             {
                 $pull: {
@@ -141,6 +142,14 @@ const uninviteUserFromEvent = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
+        let result = await Promise.all([
+            pullEventAttendingPromise,
+            pullEventInvitedPromise,
+            pullUserAttendingPromise,
+            pullUserInvitedPromise,
+        ])
+        console.log(result)
+        res.status(200).json(result)
     } catch {
         res.status(400)
         throw new Error('Could not uninvite user from event')
@@ -148,17 +157,6 @@ const uninviteUserFromEvent = asyncHandler(async (req, res) => {
 })
 const inviteUserToEvent = asyncHandler(async (req, res) => {
     try {
-        await Event.findOneAndUpdate(
-            { _id: req.params.id },
-            {
-                $addToSet: {
-                    usersInvited: mongoose.Types.ObjectId(req.params.userId),
-                },
-            },
-            {
-                new: true,
-            }
-        )
         await User.findOneAndUpdate(
             { _id: req.params.userId },
             {
@@ -170,6 +168,19 @@ const inviteUserToEvent = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
+
+        let updatedEvent = await Event.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $addToSet: {
+                    usersInvited: mongoose.Types.ObjectId(req.params.userId),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+        res.status(200).json(updatedEvent)
     } catch {
         res.status(400)
         throw new Error('Could not invite user to event')

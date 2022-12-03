@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 function Header() {
     const { user } = useContext(UserContext)
-    console.log(user)
     return (
         <header className='header'>
             <NavLink to='/'>

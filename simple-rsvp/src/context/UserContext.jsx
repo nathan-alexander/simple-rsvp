@@ -91,7 +91,6 @@ function UserContextProvider({ children }) {
             },
         })
         const data = await res.json()
-        setUser(data)
     }
 
     async function declineEventInvitation(id, eventId) {
@@ -105,7 +104,6 @@ function UserContextProvider({ children }) {
             }
         )
         const data = await res.json()
-        setUser(data)
     }
     return (
         <UserContext.Provider

@@ -177,6 +177,7 @@ const getEventsAttending = asyncHandler(async (req, res) => {
 // @route  /api/users/:id/events/:eventId/accept
 // @access Public
 const acceptEventInvitation = asyncHandler(async (req, res) => {
+    //return only the user
     try {
         await User.findOneAndUpdate(
             { _id: req.params.id },
@@ -185,28 +186,15 @@ const acceptEventInvitation = asyncHandler(async (req, res) => {
                     eventsDeclined: mongoose.Types.ObjectId(req.params.eventId),
                 },
             }
-        ),
-            await Events.findOneAndUpdate(
-                { _id: req.params.id },
-                {
-                    $pull: {
-                        usersDeclined: mongoose.Types.ObjectId(req.params.id),
-                    },
-                }
-            ),
-            await User.findOneAndUpdate(
-                { _id: req.params.id },
-                {
-                    $addToSet: {
-                        eventsAttending: mongoose.Types.ObjectId(
-                            req.params.eventId
-                        ),
-                    },
+        )
+        await Events.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $pull: {
+                    usersDeclined: mongoose.Types.ObjectId(req.params.id),
                 },
-                {
-                    new: true,
-                }
-            )
+            }
+        )
         await Events.findOneAndUpdate(
             { _id: req.params.eventId },
             {
@@ -218,6 +206,21 @@ const acceptEventInvitation = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
+        let userEventAttending = await User.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $addToSet: {
+                    eventsAttending: mongoose.Types.ObjectId(
+                        req.params.eventId
+                    ),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+        console.log(userEventAttending)
+        res.status(200).json(userEventAttending)
     } catch {
         res.status(400)
         throw new Error('Could not accept event invitation')
@@ -246,18 +249,7 @@ const declineEventInvitation = asyncHandler(async (req, res) => {
                 },
             }
         )
-        await User.findOneAndUpdate(
-            { _id: req.params.id },
-            {
-                $addToSet: {
-                    eventsDeclined: mongoose.Types.ObjectId(req.params.eventId),
-                },
-            },
-            {
-                new: true,
-            }
-        )
-        await Events.findOneAndUpdate(
+        let addEventAttendingPromise = await Events.findOneAndUpdate(
             { _id: req.params.eventId },
             {
                 $addToSet: {
@@ -268,6 +260,19 @@ const declineEventInvitation = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
+        let userAttending = await User.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $addToSet: {
+                    eventsDeclined: mongoose.Types.ObjectId(req.params.eventId),
+                },
+            },
+            {
+                new: true,
+            }
+        )
+
+        res.status(200).json(userAttending)
     } catch {
         res.status(400)
         throw new Error('Could not decline event invitation')

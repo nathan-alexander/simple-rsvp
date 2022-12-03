@@ -1,9 +1,10 @@
 import { useContext, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { EventContext } from '../../context/EventContext'
 import { UserContext } from '../../context/UserContext'
-import { useNavigate } from 'react-router-dom'
 import InviteUserForm from './InviteUserForm'
+import EventOptions from '../../shared/EventOptions'
+import InvitedUser from './InvitedUser'
 function EventDetail() {
     const [event, setEvent] = useState()
     const [userIsOwner, setUserIsOwner] = useState(false)
@@ -16,18 +17,15 @@ function EventDetail() {
         getInvitedUsers,
         getAttendingUsers,
         uninviteUserFromEvent,
+        inviteUserToEvent,
     } = useContext(EventContext)
-    const { user } = useContext(UserContext)
+    const { user, getUserByEmail } = useContext(UserContext)
     const navigate = useNavigate()
 
     let invitedUsersElements
     let attendingUserElements
 
     useEffect(() => {
-        //This is going to be a more complex event type with more detail.
-        //Will have to poll a map api to get lat,lon and display a map.
-        //Potentially add the ability to show directions
-        //Will also need to show attendees
         async function getEvent() {
             const data = await getEventById(id)
             setEvent(data)
@@ -37,10 +35,9 @@ function EventDetail() {
             setAttendees(attendingUsers.usersAttending)
         }
         getEvent()
-    }, [invited, attendees])
+    }, [])
 
     useEffect(() => {
-        //Create a function to get all users in the usersInvited array and display them here
         if (user && event) {
             setUserIsOwner(user._id === event.userId)
         }
@@ -52,24 +49,33 @@ function EventDetail() {
     }
 
     async function handleUninvite(eventId, userId) {
-        uninviteUserFromEvent(eventId, userId)
+        await uninviteUserFromEvent(eventId, userId)
         const invitedUsers = await getInvitedUsers(event._id)
         setInvited(invitedUsers.usersInvited)
     }
-    //Refactor into its own component
+
+    async function inviteUser(email) {
+        const user = await getUserByEmail(email)
+        await inviteUserToEvent(event._id, user._id)
+        const invitedUsers = await getInvitedUsers(event._id)
+        setInvited(invitedUsers.usersInvited)
+    }
+
+    async function updateAttendees() {
+        const attendingUsers = await getAttendingUsers(event._id)
+        setAttendees(attendingUsers.usersAttending)
+    }
+
     if (invited.length > 0) {
         invitedUsersElements = invited.map((user) => {
             return (
-                <div key={user._id}>
-                    {user.name}
-                    {userIsOwner && (
-                        <button
-                            onClick={() => handleUninvite(event._id, user._id)}
-                        >
-                            Uninvite
-                        </button>
-                    )}
-                </div>
+                <InvitedUser
+                    key={user._id}
+                    userIsOwner={userIsOwner}
+                    user={user}
+                    handleUninvite={handleUninvite}
+                    event={event}
+                />
             )
         })
     }
@@ -90,17 +96,27 @@ function EventDetail() {
                         </div>
                         <div className='event-host'></div>
                         <div className='invited-users'>
-                            <p>Invited Users</p>
+                            <p>Invited</p>
                             {invitedUsersElements}
                         </div>
                         <div className='attending-users'>
-                            <p>Attending Users</p>
+                            <p>Attending</p>
                             {attendingUserElements}
                         </div>
                     </div>
+                    {event.public && !userIsOwner && (
+                        <EventOptions
+                            user={user}
+                            event={event}
+                            updateAttendees={updateAttendees}
+                        />
+                    )}
                     {userIsOwner ? (
                         <div className='event-controls'>
-                            <InviteUserForm eventId={event._id} />
+                            <InviteUserForm
+                                eventId={event._id}
+                                inviteUser={inviteUser}
+                            />
                             <button className='btn btn-edit'>Edit</button>
                             <button
                                 className='btn btn-delete'

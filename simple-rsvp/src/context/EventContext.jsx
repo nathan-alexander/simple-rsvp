@@ -63,6 +63,7 @@ function EventContextProvider({ children }) {
             },
         })
         const data = await res.json()
+        console.log(data)
         setEvents((prevEvents) => {
             return [data, ...prevEvents]
         })
