@@ -87,7 +87,16 @@ function EventDetail() {
                     <div className='event-detail-name'>{event.name}</div>
                     <div className='event-details'>
                         {event.description}
-
+                        <div className='event-location'>
+                            <p className='underline'>Location</p>
+                            <p className='event-location-address'>
+                                {event.location.street}
+                            </p>
+                            <p className='event-location-address'>
+                                {event.location.city} {event.location.state}{' '}
+                                {event.location.zip}
+                            </p>
+                        </div>
                         <div className='invited-users'>
                             <p className='invited-label underline'>Invited</p>
                             {invitedUsersElements}

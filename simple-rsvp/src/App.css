@@ -8,7 +8,9 @@
     --font-clr-public: darkgreen;
     --font-clr-private: orange;
 
-    --style-clr-primary: rgb(126, 126, 233);
+    --style-clr-primary: #00cc66;
+    --style-clr-secondary: dodgerblue;
+    --style-clr-negative: #f75c03;
 }
 
 @media (min-width: 400px) {
@@ -35,7 +37,14 @@
 }
 
 .header-font {
-    font-size: var(--font-lg);
+    font-size: var(--font-xl);
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 700;
+    background: #00ed77;
+    background: linear-gradient(to right, #00ed77 0%, #30a5eb 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .header-text {
@@ -81,7 +90,7 @@ a:visited {
     display: flex;
     justify-content: space-between;
     font-size: var(--font-sm);
-    background-color: lightblue;
+    background-color: var(--style-clr-secondary);
     margin-bottom: 1em;
 }
 .event-name,
@@ -98,18 +107,22 @@ a:visited {
 .event-name {
     font-size: var(--font-lg);
 }
-
+.event-location-address {
+    margin: 0.1em;
+}
 .public-text,
 .event-host,
 .event-description {
     font-size: var(--font-reg);
 }
 
+.event-host {
+    color: white;
+}
 .event-detail-container {
     margin-top: -2em;
     padding: 2em;
     min-height: 60vh;
-    border: 1px solid red;
 }
 
 .event-detail-name {
@@ -154,6 +167,10 @@ a:visited {
     background-color: var(--style-clr-primary);
 }
 
+.btn-secondary {
+    background-color: var(--style-clr-secondary);
+}
+
 .btn-edit {
     background-color: white;
     color: lightblue;
@@ -168,6 +185,14 @@ a:visited {
     background-color: white;
     color: lightcoral;
     border: 2px solid lightcoral;
+}
+
+.btn-accept {
+    background-color: var(--style-clr-primary);
+}
+
+.btn-decline {
+    background-color: var(--style-clr-negative);
 }
 
 .btn-delete:hover {
@@ -189,25 +214,11 @@ a:visited {
 }
 
 .event-invitation {
-    border: 1px solid red;
-    margin: 1em;
-    padding: 1em;
+    margin: 0em 1em 1em 1em;
+    padding: 0em 1em 1em 1em;
     display: flex;
     justify-content: space-between;
-}
-
-.accept-icon {
-    background-color: lightgreen;
-    color: white;
-    padding: 16px;
-    border-radius: 50%;
-}
-
-.decline-icon {
-    background-color: coral;
-    color: white;
-    padding: 16px;
-    border-radius: 50%;
+    border-bottom: 1px solid gray;
 }
 
 .profile-image {
@@ -224,4 +235,11 @@ a:visited {
 .invited-user,
 .attending-user {
     margin-left: 1em;
+}
+.invited-label {
+    margin-bottom: 0;
+}
+.attending-checkmark {
+    color: var(--style-clr-primary);
+    margin-left: 5px;
 }

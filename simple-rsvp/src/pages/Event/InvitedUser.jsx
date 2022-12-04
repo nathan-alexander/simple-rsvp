@@ -5,7 +5,10 @@ function InvitedUser(props) {
         <div className='invited-user'>
             {props.user.name}
             {props.attendees.some((user) => user._id === props.user._id) ? (
-                <FontAwesomeIcon icon={faCheck} />
+                <FontAwesomeIcon
+                    icon={faCheck}
+                    className='attending-checkmark'
+                />
             ) : (
                 <></>
             )}

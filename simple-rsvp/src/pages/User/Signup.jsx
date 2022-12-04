@@ -65,7 +65,7 @@ function Signup() {
             </div>
         )
     } else {
-        return <Navigate to='/' replace />
+        return <Navigate to='/profile' replace />
     }
 }
 

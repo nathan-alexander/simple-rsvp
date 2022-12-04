@@ -7,7 +7,7 @@ function Event({ event }) {
     const publicText = event.public ? 'Public' : 'Private'
 
     const styles = {
-        backgroundColor: event.public ? 'lightgreen' : 'orange',
+        backgroundColor: event.public ? '#00cc66' : '#f75c03',
         color: 'white',
     }
 
@@ -27,10 +27,10 @@ function Event({ event }) {
             if (user._id === eventOwner._id) {
                 return 'Your Event'
             } else {
-                return `${eventOwner.name}'s event`
+                return `${eventOwner.name}'s Event`
             }
         } else if (eventOwner) {
-            return `${eventOwner.name}'s event`
+            return `${eventOwner.name}'s Event`
         }
     }
 

@@ -56,7 +56,10 @@ function UploadProfileImage() {
                 )}
                 <div className='uploader'>
                     <input type='file' onChange={handleFileInput} />
-                    <button onClick={() => handleUpload(selectedFile)}>
+                    <button
+                        className='btn btn-secondary'
+                        onClick={() => handleUpload(selectedFile)}
+                    >
                         Upload
                     </button>
                 </div>

@@ -15,7 +15,12 @@ function Profile() {
                     <h2>Account Options</h2>
                     <UploadProfileImage />
                     <h3>Logout</h3>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button
+                        className='btn btn-secondary'
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </button>
                 </div>
             </div>
         )
