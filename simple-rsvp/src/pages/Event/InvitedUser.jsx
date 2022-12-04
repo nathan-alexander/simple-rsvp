@@ -1,6 +1,6 @@
 function InvitedUser(props) {
     return (
-        <div>
+        <div className='invited-user'>
             {props.user.name}
             {props.userIsOwner && (
                 <button

@@ -9,7 +9,7 @@ const { getDistanceBetween } = require('../utils/getDistanceBetween')
 // @method GET
 
 const getEvents = asyncHandler(async (req, res) => {
-    Event.find({}).then(function (events) {
+    Event.find({ endDate: { $gt: new Date() } }).then((events) => {
         res.status(200).json(events)
     })
 })
@@ -220,7 +220,9 @@ const getEventsNearby = asyncHandler(async (req, res) => {
     //loop thru the events, performing a calculation on lat lon (need a utils)
     //if calculation is less than radius, return it
     try {
-        const allEvents = await Event.find().lean()
+        const allEvents = await Event.find({ endDate: { $gt: new Date() } })
+            .lean()
+            .sort({ startDate: 1 })
         let matchingEvents = []
         for (let event of allEvents) {
             const distance = getDistanceBetween(
@@ -236,6 +238,7 @@ const getEventsNearby = asyncHandler(async (req, res) => {
                 })
             }
         }
+
         res.status(200).json(matchingEvents)
     } catch {
         res.status(400)

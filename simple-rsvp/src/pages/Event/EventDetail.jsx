@@ -82,25 +82,27 @@ function EventDetail() {
 
     if (attendees.length > 0) {
         attendingUserElements = attendees.map((user) => {
-            return <div key={user._id}>{user.name}</div>
+            return (
+                <div className='attending-user' key={user._id}>
+                    {user.name}
+                </div>
+            )
         })
     }
     return (
         <div className='event-detail-container'>
             {event ? (
                 <div className='event-detail'>
-                    <div className='event-detail-header'>{event.name}</div>
+                    <div className='event-detail-name'>{event.name}</div>
                     <div className='event-details'>
-                        <div className='event-description'>
-                            {event.description}
-                        </div>
-                        <div className='event-host'></div>
+                        {event.description}
+
                         <div className='invited-users'>
-                            <p>Invited</p>
+                            <p className='invited-label'>Invited</p>
                             {invitedUsersElements}
                         </div>
                         <div className='attending-users'>
-                            <p>Attending</p>
+                            <p className='attending-label'>Attending</p>
                             {attendingUserElements}
                         </div>
                     </div>
