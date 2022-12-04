@@ -23,7 +23,6 @@ function EventDetail() {
     const navigate = useNavigate()
 
     let invitedUsersElements
-    let attendingUserElements
 
     useEffect(() => {
         async function getEvent() {
@@ -75,20 +74,12 @@ function EventDetail() {
                     user={user}
                     handleUninvite={handleUninvite}
                     event={event}
+                    attendees={attendees}
                 />
             )
         })
     }
 
-    if (attendees.length > 0) {
-        attendingUserElements = attendees.map((user) => {
-            return (
-                <div className='attending-user' key={user._id}>
-                    {user.name}
-                </div>
-            )
-        })
-    }
     return (
         <div className='event-detail-container'>
             {event ? (
@@ -98,12 +89,8 @@ function EventDetail() {
                         {event.description}
 
                         <div className='invited-users'>
-                            <p className='invited-label'>Invited</p>
+                            <p className='invited-label underline'>Invited</p>
                             {invitedUsersElements}
-                        </div>
-                        <div className='attending-users'>
-                            <p className='attending-label'>Attending</p>
-                            {attendingUserElements}
                         </div>
                     </div>
                     {event.public && !userIsOwner && (
