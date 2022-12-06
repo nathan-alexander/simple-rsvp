@@ -24,8 +24,11 @@ function InviteUserForm(props) {
                 name='email'
                 value={formData.email}
                 onChange={handleOnChange}
+                className='text-input'
             />
-            <button type='submit'>Invite</button>
+            <button type='submit' className='btn btn-primary'>
+                Invite
+            </button>
         </form>
     )
 }

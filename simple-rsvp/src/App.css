@@ -13,7 +13,7 @@
     --style-clr-negative: #f75c03;
 }
 
-@media (min-width: 400px) {
+@media (min-width: 415px) {
     :root {
         --font-xl: 1.75rem;
         --font-lg: 1.25rem;
@@ -24,6 +24,15 @@
     .app-container {
         max-width: 800px;
     }
+
+    .event-details {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.inherit {
+    font-size: inherit;
 }
 
 .header {
@@ -115,7 +124,14 @@ a:visited {
 .event-description {
     font-size: var(--font-reg);
 }
+.event-time > p {
+    margin-bottom: 0;
+}
 
+.event-time > span {
+    font-size: var(--font-sm);
+    color: gray;
+}
 .event-host {
     color: white;
 }
@@ -123,6 +139,8 @@ a:visited {
     margin-top: -2em;
     padding: 2em;
     min-height: 60vh;
+    border-left: 5px solid var(--style-clr-secondary);
+    border-right: 1px solid var(--style-clr-secondary);
 }
 
 .event-detail-name {
@@ -132,10 +150,16 @@ a:visited {
 .event-details-header {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
 }
 
 .event-detail-subheader {
     font-size: var(--font-lg);
+}
+
+.event-controls {
+    width: 40%;
+    margin: 4em auto;
 }
 
 .event-creation-form,
@@ -145,11 +169,18 @@ a:visited {
     flex-direction: column;
 }
 
+.text-input-skinny {
+    border: 1px solid gray;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 8px;
+}
+
 .text-input {
     padding: 1em;
     border-radius: 8px;
     margin: 0.25em;
     border: 1px solid gray;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn {
@@ -173,18 +204,18 @@ a:visited {
 
 .btn-edit {
     background-color: white;
-    color: lightblue;
-    border: 2px solid lightblue;
+    color: dodgerblue;
+    border: 2px solid dodgerblue;
 }
 
 .btn-edit:hover {
-    background-color: lightblue;
+    background-color: dodgerblue;
     color: white;
 }
 .btn-delete {
     background-color: white;
-    color: lightcoral;
-    border: 2px solid lightcoral;
+    color: var(--style-clr-negative);
+    border: 2px solid var(--style-clr-negative);
 }
 
 .btn-accept {
@@ -196,7 +227,7 @@ a:visited {
 }
 
 .btn-delete:hover {
-    background-color: lightcoral;
+    background-color: var(--style-clr-negative);
     color: white;
 }
 .reduced-width {
@@ -232,14 +263,34 @@ a:visited {
     border-radius: 50%;
 }
 
-.invited-user,
-.attending-user {
+.invited-user {
     margin-left: 1em;
+    border-bottom: 1px solid lightgray;
+    padding: 0.25em;
+    max-width: 40%;
 }
 .invited-label {
     margin-bottom: 0;
 }
+
+.uninvite-action {
+    float: right;
+    cursor: pointer;
+}
+
+.uninvite-action:hover {
+    color: red;
+}
 .attending-checkmark {
     color: var(--style-clr-primary);
     margin-left: 5px;
+}
+
+.editing-message {
+    width: 25%;
+    margin: 0 auto;
+    background-color: var(--style-clr-secondary);
+    color: white;
+    padding: 0.5em;
+    border-radius: 5px;
 }

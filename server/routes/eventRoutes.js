@@ -10,6 +10,7 @@ const {
     getEventAttendingUsers,
     uninviteUserFromEvent,
     getEventsNearby,
+    editEventById,
 } = require('../controllers/eventController')
 
 const protect = require('../middleware/authMiddleware')
@@ -23,5 +24,6 @@ router.get('/:id/attending', getEventAttendingUsers)
 router.get('/nearby/find', getEventsNearby)
 router.put('/invite/:id/:userId', inviteUserToEvent)
 router.put('/uninvite/:id/:userId', uninviteUserFromEvent)
+router.put('/:id', editEventById)
 
 module.exports = router

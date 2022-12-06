@@ -212,6 +212,27 @@ const getEventAttendingUsers = asyncHandler(async (req, res) => {
     }
 })
 
+const editEventById = asyncHandler(async (req, res) => {
+    try {
+        const event = await Event.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $set: {
+                    name: req.body.name,
+                    description: req.body.description,
+                },
+            },
+            {
+                new: true,
+            }
+        )
+        res.status(200).json(event)
+    } catch {
+        res.status(400)
+        throw new Error('Could not edit event')
+    }
+})
+
 const getEventsNearby = asyncHandler(async (req, res) => {
     let lat = req.query.lat
     let lon = req.query.lon
@@ -256,4 +277,5 @@ module.exports = {
     getEventAttendingUsers,
     uninviteUserFromEvent,
     getEventsNearby,
+    editEventById,
 }

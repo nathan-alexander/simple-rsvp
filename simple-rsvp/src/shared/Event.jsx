@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context/UserContext'
-import fortmatDistanceToNow from 'date-fns/formatDistanceToNow'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 function Event({ event }) {
     const [eventOwner, setEventOwner] = useState(null)
     const publicText = event.public ? 'Public' : 'Private'
@@ -44,12 +44,12 @@ function Event({ event }) {
                         {publicText}
                     </div>
                 </div>
-                <div className='event-details'>
+                <div>
                     <div className='event-details-header'>
                         <div className='event-name'>{event.name}</div>
                         <div>
                             Starts in{' '}
-                            {fortmatDistanceToNow(new Date(event.startDate))}
+                            {formatDistanceToNow(new Date(event.startDate))}
                         </div>
                     </div>
                     <div className='event-description'>{event.description}</div>

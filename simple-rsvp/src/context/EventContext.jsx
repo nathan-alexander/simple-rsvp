@@ -82,6 +82,18 @@ function EventContextProvider({ children }) {
         })
     }
 
+    async function editEvent(event) {
+        const res = await fetch(`${url}/events/${event._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(event),
+        })
+        const data = await res.json()
+        return data
+    }
+
     async function getInvitedUsers(id) {
         const res = await fetch(`${url}/events/${id}/invited`)
         const data = await res.json()
@@ -106,6 +118,7 @@ function EventContextProvider({ children }) {
                 getAttendingUsers,
                 uninviteUserFromEvent,
                 getEventsNearby,
+                editEvent,
             }}
         >
             {children}

@@ -5,11 +5,15 @@ import { UserContext } from '../../context/UserContext'
 import InviteUserForm from './InviteUserForm'
 import EventOptions from '../../shared/EventOptions'
 import InvitedUser from './InvitedUser'
+import EditEvent from './EditEvent'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+
 function EventDetail() {
     const [event, setEvent] = useState()
     const [userIsOwner, setUserIsOwner] = useState(false)
     const [invited, setInvited] = useState([])
     const [attendees, setAttendees] = useState([])
+    const [editing, setEditing] = useState(false)
     const { id } = useParams()
     const {
         getEventById,
@@ -18,6 +22,7 @@ function EventDetail() {
         getAttendingUsers,
         uninviteUserFromEvent,
         inviteUserToEvent,
+        editEvent,
     } = useContext(EventContext)
     const { user, getUserByEmail } = useContext(UserContext)
     const navigate = useNavigate()
@@ -32,6 +37,7 @@ function EventDetail() {
             setInvited(invitedUsers.usersInvited)
             const attendingUsers = await getAttendingUsers(data._id)
             setAttendees(attendingUsers.usersAttending)
+            setEditing(false)
         }
         getEvent()
     }, [])
@@ -45,6 +51,25 @@ function EventDetail() {
     function handleDelete(id) {
         deleteEvent(id)
         navigate('/')
+    }
+
+    function handleOnChange(e) {
+        setEvent((prevState) => ({
+            ...prevState,
+            [e.target.name]:
+                e.target.type === 'checkbox'
+                    ? e.target.checked
+                    : e.target.value,
+        }))
+    }
+
+    function handleEdit() {
+        setEditing(true)
+    }
+
+    async function editSubmit() {
+        await editEvent(event)
+        setEditing(false)
     }
 
     async function handleUninvite(eventId, userId) {
@@ -63,6 +88,16 @@ function EventDetail() {
     async function updateAttendees() {
         const attendingUsers = await getAttendingUsers(event._id)
         setAttendees(attendingUsers.usersAttending)
+    }
+
+    function readableDate(dateString) {
+        const date = new Date(dateString)
+        return date.toLocaleDateString('en-us', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        })
     }
 
     if (invited.length > 0) {
@@ -84,9 +119,30 @@ function EventDetail() {
         <div className='event-detail-container'>
             {event ? (
                 <div className='event-detail'>
-                    <div className='event-detail-name'>{event.name}</div>
+                    <div className='event-detail-name'>
+                        {editing ? (
+                            <input
+                                name='name'
+                                onChange={handleOnChange}
+                                value={event.name}
+                                className='inherit text-input-skinny'
+                            ></input>
+                        ) : (
+                            <span>{event.name}</span>
+                        )}
+                    </div>
+                    {editing ? (
+                        <input
+                            name='description'
+                            onChange={handleOnChange}
+                            value={event.description}
+                            className='inherit text-input-skinny'
+                        ></input>
+                    ) : (
+                        <span>{event.description}</span>
+                    )}
+
                     <div className='event-details'>
-                        {event.description}
                         <div className='event-location'>
                             <p className='underline'>Location</p>
                             <p className='event-location-address'>
@@ -97,10 +153,17 @@ function EventDetail() {
                                 {event.location.zip}
                             </p>
                         </div>
-                        <div className='invited-users'>
-                            <p className='invited-label underline'>Invited</p>
-                            {invitedUsersElements}
+                        <div className='event-time'>
+                            <p>
+                                Starts in{' '}
+                                {formatDistanceToNow(new Date(event.startDate))}
+                            </p>
+                            <span>{readableDate(event.startDate)}</span>
                         </div>
+                    </div>
+                    <div className='invited-users'>
+                        <p className='invited-label underline'>Invited</p>
+                        {invitedUsersElements}
                     </div>
                     {event.public && !userIsOwner && (
                         <EventOptions
@@ -115,7 +178,22 @@ function EventDetail() {
                                 eventId={event._id}
                                 inviteUser={inviteUser}
                             />
-                            <button className='btn btn-edit'>Edit</button>
+                            {!editing ? (
+                                <button
+                                    className='btn btn-edit'
+                                    onClick={() => handleEdit()}
+                                >
+                                    Edit
+                                </button>
+                            ) : (
+                                <button
+                                    className='btn btn-edit'
+                                    onClick={() => editSubmit()}
+                                >
+                                    Save
+                                </button>
+                            )}
+
                             <button
                                 className='btn btn-delete'
                                 onClick={() => handleDelete(event._id)}

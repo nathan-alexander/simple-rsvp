@@ -13,13 +13,14 @@ function InvitedUser(props) {
                 <></>
             )}
             {props.userIsOwner && (
-                <button
+                <span
+                    className='uninvite-action'
                     onClick={() =>
                         props.handleUninvite(props.event._id, props.user._id)
                     }
                 >
-                    Uninvite
-                </button>
+                    x
+                </span>
             )}
         </div>
     )
