@@ -13,24 +13,6 @@
     --style-clr-negative: #f75c03;
 }
 
-@media (min-width: 415px) {
-    :root {
-        --font-xl: 1.75rem;
-        --font-lg: 1.25rem;
-        --font-reg: 1rem;
-        --font-sm: 0.75rem;
-    }
-
-    .app-container {
-        max-width: 800px;
-    }
-
-    .event-details {
-        display: flex;
-        justify-content: space-between;
-    }
-}
-
 .inherit {
     font-size: inherit;
 }
@@ -158,8 +140,16 @@ a:visited {
 }
 
 .event-controls {
-    width: 40%;
-    margin: 4em auto;
+    margin-top: 3em;
+}
+
+.owner-controls {
+    text-align: center;
+    margin-top: 3em;
+}
+
+.invite-user {
+    width: 175px;
 }
 
 .event-creation-form,
@@ -184,8 +174,8 @@ a:visited {
 }
 
 .btn {
-    margin: 0.5em;
-    padding: 1em 2em;
+    margin: 0.25em;
+    padding: 0.5em 1em;
     border: none;
     border-radius: 5px;
     font-family: 'Poppins', 'sans-serif';
@@ -236,6 +226,10 @@ a:visited {
 
 .underline {
     text-decoration: underline;
+}
+
+.centered {
+    margin: 0 auto;
 }
 
 .near-me-zip {
@@ -293,4 +287,38 @@ a:visited {
     color: white;
     padding: 0.5em;
     border-radius: 5px;
+}
+
+.selected-link {
+    text-decoration: underline;
+}
+
+@media (min-width: 600px) {
+    :root {
+        --font-xl: 1.75rem;
+        --font-lg: 1.25rem;
+        --font-reg: 1rem;
+        --font-sm: 0.75rem;
+    }
+
+    .app-container {
+        max-width: 800px;
+    }
+    .btn {
+        margin: 0.5em;
+        padding: 1em 2em;
+    }
+
+    .invite-user {
+        width: 355px;
+    }
+
+    .event-details {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .owner-controls {
+        margin-top: 6em;
+    }
 }

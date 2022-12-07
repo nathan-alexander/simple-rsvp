@@ -14,6 +14,7 @@ function EventDetail() {
     const [invited, setInvited] = useState([])
     const [attendees, setAttendees] = useState([])
     const [editing, setEditing] = useState(false)
+    const [eventExpired, setEventExpired] = useState(false)
     const { id } = useParams()
     const {
         getEventById,
@@ -28,6 +29,7 @@ function EventDetail() {
     const navigate = useNavigate()
 
     let invitedUsersElements
+    let dateStyles
 
     useEffect(() => {
         async function getEvent() {
@@ -45,6 +47,7 @@ function EventDetail() {
     useEffect(() => {
         if (user && event) {
             setUserIsOwner(user._id === event.userId)
+            setEventExpired(new Date(event.endDate) < new Date())
         }
     }, [event])
 
@@ -99,6 +102,28 @@ function EventDetail() {
             day: 'numeric',
         })
     }
+    if (event) {
+        dateStyles = {
+            color: eventExpired ? 'red' : 'black',
+        }
+    }
+
+    function displayDistanceToNow() {
+        if (event) {
+            if (
+                new Date(event.startDate) < new Date() &&
+                new Date(event.endDate) > new Date()
+            ) {
+                return 'Event Started'
+            } else if (new Date(event.endDate) < new Date()) {
+                return 'Expired'
+            } else {
+                return `Starts in ${formatDistanceToNow(
+                    new Date(event.startDate)
+                )}`
+            }
+        }
+    }
 
     if (invited.length > 0) {
         invitedUsersElements = invited.map((user) => {
@@ -132,12 +157,12 @@ function EventDetail() {
                         )}
                     </div>
                     {editing ? (
-                        <input
+                        <textarea
                             name='description'
                             onChange={handleOnChange}
                             value={event.description}
                             className='inherit text-input-skinny'
-                        ></input>
+                        ></textarea>
                     ) : (
                         <span>{event.description}</span>
                     )}
@@ -154,18 +179,18 @@ function EventDetail() {
                             </p>
                         </div>
                         <div className='event-time'>
-                            <p>
-                                Starts in{' '}
-                                {formatDistanceToNow(new Date(event.startDate))}
-                            </p>
-                            <span>{readableDate(event.startDate)}</span>
+                            <p style={dateStyles}>{displayDistanceToNow()}</p>
+                            <span>
+                                {readableDate(event.startDate)} -{' '}
+                                {readableDate(event.endDate)}
+                            </span>
                         </div>
                     </div>
                     <div className='invited-users'>
                         <p className='invited-label underline'>Invited</p>
                         {invitedUsersElements}
                     </div>
-                    {event.public && !userIsOwner && (
+                    {event.public && !userIsOwner && !eventExpired && (
                         <EventOptions
                             user={user}
                             event={event}
@@ -178,28 +203,30 @@ function EventDetail() {
                                 eventId={event._id}
                                 inviteUser={inviteUser}
                             />
-                            {!editing ? (
-                                <button
-                                    className='btn btn-edit'
-                                    onClick={() => handleEdit()}
-                                >
-                                    Edit
-                                </button>
-                            ) : (
-                                <button
-                                    className='btn btn-edit'
-                                    onClick={() => editSubmit()}
-                                >
-                                    Save
-                                </button>
-                            )}
+                            <div className='owner-controls'>
+                                {!editing ? (
+                                    <button
+                                        className='btn btn-edit'
+                                        onClick={() => handleEdit()}
+                                    >
+                                        Edit
+                                    </button>
+                                ) : (
+                                    <button
+                                        className='btn btn-edit'
+                                        onClick={() => editSubmit()}
+                                    >
+                                        Save
+                                    </button>
+                                )}
 
-                            <button
-                                className='btn btn-delete'
-                                onClick={() => handleDelete(event._id)}
-                            >
-                                Delete
-                            </button>
+                                <button
+                                    className='btn btn-delete'
+                                    onClick={() => handleDelete(event._id)}
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     ) : (
                         <></>

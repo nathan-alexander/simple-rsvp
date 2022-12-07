@@ -20,6 +20,7 @@ function CreateEvent() {
     const { createEvent } = useContext(EventContext)
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
+
     function formatDate() {
         const now = new Date()
         const offsetMs = now.getTimezoneOffset() * 60 * 1000
@@ -141,10 +142,14 @@ function CreateEvent() {
                     />
                     <label htmlFor='public'>Public event?</label>
                 </div>
-
-                <button className='btn btn-primary reduced-width' type='submit'>
-                    Submit
-                </button>
+                <div className='centered'>
+                    <button
+                        className='btn btn-primary reduced-width'
+                        type='submit'
+                    >
+                        Submit
+                    </button>
+                </div>
             </form>
         </div>
     )
