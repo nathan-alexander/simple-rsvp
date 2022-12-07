@@ -47,7 +47,7 @@ function EventDetail() {
     useEffect(() => {
         if (user && event) {
             setUserIsOwner(user._id === event.userId)
-            setEventExpired(new Date(event.endDate) < new Date())
+            setEventExpired(true)
         }
     }, [event])
 

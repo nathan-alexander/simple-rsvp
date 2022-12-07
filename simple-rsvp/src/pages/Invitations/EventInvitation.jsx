@@ -1,41 +1,9 @@
-import { useState, useContext, useEffect } from 'react'
 import EventOptions from '../../shared/EventOptions'
 import { Link } from 'react-router-dom'
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-
+import useDateControls from '../../hooks/useDateControls'
 function EventInvitation(props) {
-    const [eventExpired, setEventExpired] = useState(
-        new Date(props.event.endDate) < new Date()
-    )
-
-    const dateStyles = {
-        color: eventExpired ? 'red' : 'black',
-    }
-
-    function displayDistanceToNow() {
-        if (
-            new Date(props.event.startDate) < new Date() &&
-            new Date(props.event.endDate) > new Date()
-        ) {
-            return 'Event Started'
-        } else if (new Date(props.event.endDate) < new Date()) {
-            return 'Expired'
-        } else {
-            return `Starts in ${formatDistanceToNow(
-                new Date(props.event.startDate)
-            )}`
-        }
-    }
-
-    function readableDate(dateString) {
-        const date = new Date(dateString)
-        return date.toLocaleDateString('en-us', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        })
-    }
+    const [eventExpired, displayDistanceToNow, readableDate, dateStyles] =
+        useDateControls(props.event)
     return (
         <div className='event-invitation'>
             <div>
