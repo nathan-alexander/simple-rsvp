@@ -47,12 +47,11 @@ function EventDetail() {
     useEffect(() => {
         if (user && event) {
             setUserIsOwner(user._id === event.userId)
-            setEventExpired(true)
         }
     }, [event])
 
-    function handleDelete(id) {
-        deleteEvent(id)
+    async function handleDelete(id) {
+        await deleteEvent(id)
         navigate('/')
     }
 

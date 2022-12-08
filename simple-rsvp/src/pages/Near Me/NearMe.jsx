@@ -4,6 +4,7 @@ import { EventContext } from '../../context/EventContext'
 import Event from '../../shared/Event'
 import useGeolocation from '../../hooks/useGeolocation'
 import { getCoordinatesFromZIP } from '../../utils/geocoding'
+import Loading from '../../shared/Loading'
 
 function NearMe() {
     const [nearbyEvents, setNearbyEvents] = useState([])
@@ -76,7 +77,7 @@ function NearMe() {
             </div>
         )
     } else {
-        return <div>Loading...</div>
+        return <Loading />
     }
 }
 
