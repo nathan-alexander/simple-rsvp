@@ -8,16 +8,23 @@ function Home() {
     const { events } = useContext(EventContext)
     const { user, eventsHosting, getEventsHostedByUser } =
         useContext(UserContext)
+    let hostedEventElements, eventElements
 
-    const eventElements = events.map((event, index) => {
-        return <Event key={event._id} event={event} />
-    })
-    let hostedEventElements
-    if (eventsHosting) {
-        hostedEventElements = eventsHosting.map((event, index) => {
+    if (user && eventsHosting) {
+        hostedEventElements = eventsHosting.map((event) => {
+            return <Event key={event._id} event={event} />
+        })
+        eventElements = events
+            .filter((event) => event.userId !== user._id)
+            .map((event) => {
+                return <Event key={event._id} event={event} />
+            })
+    } else {
+        eventElements = events.map((event) => {
             return <Event key={event._id} event={event} />
         })
     }
+
     useEffect(() => {
         if (user) {
             getEventsHostedByUser(user._id)

@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react'
+import { createContext, useState } from 'react'
 
 const UserContext = createContext()
 
@@ -7,13 +7,13 @@ function UserContextProvider({ children }) {
     const [message, setMessage] = useState(null)
     const [eventsHosting, setEventsHosting] = useState([])
     const [eventsAttending, setEventsAttending] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
     const url = 'http://localhost:5001/api'
 
     async function getEventsHostedByUser(id) {
         const res = await fetch(`${url}/users/${id}/events`)
         const data = await res.json()
         setEventsHosting(data)
+        return data
     }
     async function loginUser(user) {
         const res = await fetch(`${url}/users/login`, {
@@ -34,6 +34,7 @@ function UserContextProvider({ children }) {
     }
     async function logoutUser() {
         setUser(null)
+        setEventsHosting(null)
         localStorage.removeItem('user')
     }
     async function signupUser(user) {
