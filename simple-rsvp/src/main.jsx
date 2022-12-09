@@ -7,11 +7,13 @@ import { UserContextProvider } from './context/UserContext'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <UserContextProvider>
-        <EventContextProvider>
-            <Router>
-                <App />
-            </Router>
-        </EventContextProvider>
-    </UserContextProvider>
+    <React.StrictMode>
+        <UserContextProvider>
+            <EventContextProvider>
+                <Router>
+                    <App />
+                </Router>
+            </EventContextProvider>
+        </UserContextProvider>
+    </React.StrictMode>
 )

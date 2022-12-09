@@ -10,9 +10,8 @@ function Profile() {
     if (user) {
         return (
             <div className='profile-page'>
-                <h1>Hello {user.name}</h1>
                 <div className='profile-page-options'>
-                    <h2>Account Options</h2>
+                    <h2 className='profile-page-header'>Account Options</h2>
                     <UploadProfileImage />
                     <h3>Logout</h3>
                     <button

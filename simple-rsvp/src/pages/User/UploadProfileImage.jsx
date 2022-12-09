@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useRef } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { uploadFile } from 'react-s3'
 import { Buffer } from 'buffer'
@@ -21,6 +21,12 @@ function UploadProfileImage() {
     const [selectedFile, setSelectedFile] = useState(null)
     const [selectedFileImage, setSelectedFileImage] = useState(null)
     const { user, updateUser } = useContext(UserContext)
+
+    const inputFile = useRef(null)
+
+    function onButtonClick() {
+        inputFile.current.click()
+    }
     function handleFileInput(e) {
         setSelectedFile(e.target.files[0])
         setSelectedFileImage(URL.createObjectURL(e.target.files[0]))
@@ -37,6 +43,7 @@ function UploadProfileImage() {
                     position: toast.POSITION.TOP_RIGHT,
                 })
             )
+            .then(setSelectedFile(null))
             .catch((err) => console.error(err))
     }
 
@@ -55,13 +62,29 @@ function UploadProfileImage() {
                     />
                 )}
                 <div className='uploader'>
-                    <input type='file' onChange={handleFileInput} />
-                    <button
-                        className='btn btn-secondary'
-                        onClick={() => handleUpload(selectedFile)}
-                    >
-                        Upload
-                    </button>
+                    <input
+                        type='file'
+                        ref={inputFile}
+                        className='hidden'
+                        id='file'
+                        onChange={handleFileInput}
+                    />
+
+                    {selectedFile ? (
+                        <button
+                            className='btn btn-secondary'
+                            onClick={() => handleUpload(selectedFile)}
+                        >
+                            Upload
+                        </button>
+                    ) : (
+                        <button
+                            className='btn btn-secondary'
+                            onClick={() => onButtonClick()}
+                        >
+                            Change Profile Image
+                        </button>
+                    )}
                 </div>
             </div>
             <ToastContainer autoClose={3000} />
