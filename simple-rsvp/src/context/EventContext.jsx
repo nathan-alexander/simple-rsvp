@@ -6,8 +6,6 @@ function EventContextProvider({ children }) {
     const [events, setEvents] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const url = 'http://localhost:5001/api'
-
-    const { user } = useContext(UserContext)
     useEffect(() => {
         getEvents()
     }, [])
@@ -15,6 +13,7 @@ function EventContextProvider({ children }) {
     async function getEvents() {
         const res = await fetch(`${url}/events`)
         const data = await res.json()
+        console.log(data)
         setEvents(data)
     }
 
@@ -63,10 +62,7 @@ function EventContextProvider({ children }) {
             },
         })
         const data = await res.json()
-        console.log(data)
-        setEvents((prevEvents) => {
-            return [data, ...prevEvents]
-        })
+        return data
     }
 
     async function uninviteUserFromEvent(eventId, userId) {
@@ -77,10 +73,7 @@ function EventContextProvider({ children }) {
             },
         })
         const data = await res.json()
-        console.log(data)
-        setEvents((prevEvents) => {
-            return [data, ...prevEvents]
-        })
+        return data
     }
 
     async function editEvent(event) {

@@ -33,9 +33,9 @@ function UserContextProvider({ children }) {
         }
     }
     async function logoutUser() {
+        localStorage.removeItem('user')
         setUser(null)
         setEventsHosting(null)
-        localStorage.removeItem('user')
     }
     async function signupUser(user) {
         const res = await fetch(`${url}/users`, {
