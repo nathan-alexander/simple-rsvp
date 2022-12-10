@@ -269,11 +269,13 @@ a:visited {
     border-radius: 50%;
 }
 
+.invited-users > * {
+    width: 50%;
+}
 .invited-user {
     margin-left: 1em;
     border-bottom: 1px solid lightgray;
     padding: 0.25em;
-    max-width: 40%;
 }
 .invited-label {
     margin-bottom: 0;

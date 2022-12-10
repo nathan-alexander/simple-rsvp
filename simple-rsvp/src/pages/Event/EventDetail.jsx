@@ -29,6 +29,7 @@ function EventDetail() {
     const navigate = useNavigate()
 
     let invitedUsersElements
+    let attendingUserElements
     let dateStyles
 
     useEffect(() => {
@@ -78,6 +79,8 @@ function EventDetail() {
         await uninviteUserFromEvent(eventId, userId)
         const invitedUsers = await getInvitedUsers(event._id)
         setInvited(invitedUsers.usersInvited)
+        const attendingUsers = await getAttendingUsers(event._id)
+        setAttendees(attendingUsers.usersAttending)
     }
 
     async function inviteUser(email) {
@@ -138,6 +141,42 @@ function EventDetail() {
             )
         })
     }
+    if (attendees.length > 0) {
+        //only show attendees that were not previously invited
+        if (invited) {
+            const invitedIds = new Set(invited.map(({ _id }) => _id))
+            const filteredAttendees = attendees.filter(
+                ({ _id }) => !invitedIds.has(_id)
+            )
+            attendingUserElements = filteredAttendees.map((user) => {
+                return (
+                    <InvitedUser
+                        key={user._id}
+                        userIsOwner={userIsOwner}
+                        user={user}
+                        handleUninvite={handleUninvite}
+                        event={event}
+                        attendees={attendees}
+                        publicUser={true}
+                    />
+                )
+            })
+        } else {
+            attendingUserElements = attendees.map((user) => {
+                return (
+                    <InvitedUser
+                        key={user._id}
+                        userIsOwner={userIsOwner}
+                        user={user}
+                        handleUninvite={handleUninvite}
+                        event={event}
+                        attendees={attendees}
+                        publicUser={true}
+                    />
+                )
+            })
+        }
+    }
 
     return (
         <div className='event-detail-container'>
@@ -188,6 +227,7 @@ function EventDetail() {
                     <div className='invited-users'>
                         <p className='invited-label underline'>Invited</p>
                         {invitedUsersElements}
+                        {attendingUserElements}
                     </div>
                     {event.public && !userIsOwner && !eventExpired && (
                         <EventOptions

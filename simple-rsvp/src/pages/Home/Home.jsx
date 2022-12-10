@@ -35,7 +35,7 @@ function Home() {
             {user ? (
                 <div className='user-message'>
                     <h2>Welcome {user.name}</h2>
-                    {hostedEventElements.length > 0 && (
+                    {hostedEventElements && (
                         <div>
                             <h3>You are hosting</h3>
                             {hostedEventElements}

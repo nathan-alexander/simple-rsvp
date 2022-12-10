@@ -3,7 +3,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 function InvitedUser(props) {
     return (
         <div className='invited-user'>
-            {props.user.name}
+            {props.user.name} {props.publicUser && <span>{' (public)'}</span>}
             {props.attendees.some((user) => user._id === props.user._id) ? (
                 <FontAwesomeIcon
                     icon={faCheck}

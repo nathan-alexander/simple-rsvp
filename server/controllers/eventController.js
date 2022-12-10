@@ -142,14 +142,8 @@ const uninviteUserFromEvent = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
-        let result = await Promise.all([
-            pullEventAttendingPromise,
-            pullEventInvitedPromise,
-            pullUserAttendingPromise,
-            pullUserInvitedPromise,
-        ])
-        console.log(result)
-        res.status(200).json(result)
+        console.log(pullEventAttendingPromise)
+        res.status(200).json(pullEventAttendingPromise)
     } catch {
         res.status(400)
         throw new Error('Could not uninvite user from event')
