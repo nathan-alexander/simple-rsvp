@@ -5,7 +5,7 @@ import { UserContext } from '../../context/UserContext'
 import InviteUserForm from './InviteUserForm'
 import EventOptions from '../../shared/EventOptions'
 import InvitedUser from './InvitedUser'
-import EditEvent from './EditEvent'
+import DeleteModal from '../../shared/DeleteModal'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
 function EventDetail() {
@@ -15,6 +15,7 @@ function EventDetail() {
     const [attendees, setAttendees] = useState([])
     const [editing, setEditing] = useState(false)
     const [eventExpired, setEventExpired] = useState(false)
+    const [modalShow, setModalShow] = useState(false)
     const { id } = useParams()
     const {
         getEventById,
@@ -51,8 +52,9 @@ function EventDetail() {
         }
     }, [event])
 
-    async function handleDelete(id) {
-        await deleteEvent(id)
+    async function handleDelete() {
+        console.log('Deleting event')
+        await deleteEvent(event._id)
         navigate('/')
     }
 
@@ -261,10 +263,16 @@ function EventDetail() {
 
                                 <button
                                     className='btn btn-delete'
-                                    onClick={() => handleDelete(event._id)}
+                                    onClick={() => setModalShow(true)}
                                 >
                                     Delete
                                 </button>
+                                <DeleteModal
+                                    show={modalShow}
+                                    onHide={() => setModalShow(false)}
+                                    item={event.name}
+                                    handleDelete={handleDelete}
+                                />
                             </div>
                         </div>
                     ) : (

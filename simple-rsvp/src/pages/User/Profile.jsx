@@ -1,11 +1,18 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Navigate } from 'react-router-dom'
 import UploadProfileImage from './UploadProfileImage'
+import DeleteModal from '../../shared/DeleteModal'
 function Profile() {
-    const { user, logoutUser } = useContext(UserContext)
+    const [modalShow, setModalShow] = useState(false)
+    const { user, logoutUser, deleteUser } = useContext(UserContext)
+
     function handleLogout() {
         logoutUser()
+    }
+
+    async function handleDelete() {
+        await deleteUser(user._id)
     }
     if (user) {
         return (
@@ -20,6 +27,18 @@ function Profile() {
                     >
                         Logout
                     </button>
+                    <button
+                        className='btn btn-decline'
+                        onClick={() => setModalShow(true)}
+                    >
+                        Delete Account
+                    </button>
+                    <DeleteModal
+                        show={modalShow}
+                        onHide={() => setModalShow(false)}
+                        item={user.name}
+                        handleDelete={handleDelete}
+                    />
                 </div>
             </div>
         )

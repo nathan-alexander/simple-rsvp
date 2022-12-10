@@ -13,7 +13,6 @@ function EventContextProvider({ children }) {
     async function getEvents() {
         const res = await fetch(`${url}/events`)
         const data = await res.json()
-        console.log(data)
         setEvents(data)
     }
 
@@ -47,11 +46,13 @@ function EventContextProvider({ children }) {
 
     async function deleteEvent(id) {
         //check if user is owner of event before deleting
-        await fetch(`${url}/events/${id}`, {
+        const res = await fetch(`${url}/events/${id}`, {
             method: 'DELETE',
         })
-        const newEvents = events.filter((event) => event._id !== id)
-        setEvents(newEvents)
+        if (res.ok) {
+            const newEvents = events.filter((event) => event._id !== id)
+            setEvents(newEvents)
+        }
     }
 
     async function inviteUserToEvent(eventId, userId) {

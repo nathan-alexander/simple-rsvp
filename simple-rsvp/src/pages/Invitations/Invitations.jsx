@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react'
 import { UserContext } from '../../context/UserContext'
 import EventInvitation from './EventInvitation'
+import { Link } from 'react-router-dom'
 
 function Invitations() {
     const { user, getEventsInvitedTo } = useContext(UserContext)
@@ -25,7 +26,17 @@ function Invitations() {
     if (eventElements) {
         return <div>{eventElements}</div>
     } else {
-        return <div>No invitations</div>
+        return (
+            <div>
+                <p>No invitations.</p>
+                <p>
+                    Find an event{' '}
+                    <Link to='/nearme'>
+                        <span className='primary'>near you</span>{' '}
+                    </Link>
+                </p>
+            </div>
+        )
     }
 }
 

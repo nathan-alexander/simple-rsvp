@@ -96,6 +96,17 @@ const updateUser = asyncHandler(async (req, res) => {
         }
     )
 })
+
+const deleteUser = asyncHandler(async (req, res) => {
+    console.log(req.params.id)
+    try {
+        await User.findByIdAndDelete({ _id: req.params.id })
+        res.status(200).json('User deleted')
+    } catch {
+        res.status(400)
+        throw new Error('Something went wrong')
+    }
+})
 const getMe = asyncHandler(async (req, res) => {
     const user = {
         id: req.user._id,
@@ -298,4 +309,5 @@ module.exports = {
     acceptEventInvitation,
     declineEventInvitation,
     updateUser,
+    deleteUser,
 }

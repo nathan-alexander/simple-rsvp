@@ -221,7 +221,10 @@ a:visited {
 .btn-decline {
     background-color: var(--style-clr-negative);
 }
-
+.btn-decline:hover {
+    color: white;
+    background-color: red;
+}
 .btn-delete:hover {
     background-color: var(--style-clr-negative);
     color: white;
@@ -309,6 +312,10 @@ a:visited {
 
 .profile-page-header {
     border-bottom: 1px solid gray;
+}
+
+.primary {
+    color: var(--style-clr-primary);
 }
 @media (min-width: 600px) {
     :root {

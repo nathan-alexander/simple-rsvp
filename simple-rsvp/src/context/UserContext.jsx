@@ -37,6 +37,18 @@ function UserContextProvider({ children }) {
         setUser(null)
         setEventsHosting(null)
     }
+
+    async function deleteUser(id) {
+        const res = await fetch(`${url}/users/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        if (res.ok) {
+            localStorage.removeItem('user')
+            setUser(null)
+            setEventsAttending(null)
+        }
+    }
     async function signupUser(user) {
         const res = await fetch(`${url}/users`, {
             method: 'POST',
@@ -124,6 +136,7 @@ function UserContextProvider({ children }) {
                 acceptEventInvitation,
                 declineEventInvitation,
                 updateUser,
+                deleteUser,
             }}
         >
             {children}
