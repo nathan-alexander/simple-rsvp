@@ -1,4 +1,4 @@
-import loading from '../../public/loading.gif'
+import loading from '../../src/assets/loading.gif'
 
 function Loading() {
     const styles = {

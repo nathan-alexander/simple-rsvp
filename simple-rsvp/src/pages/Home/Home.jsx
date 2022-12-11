@@ -33,15 +33,23 @@ function Home() {
     return (
         <div className='home'>
             {user ? (
-                <div className='user-message'>
-                    <h2>Welcome {user.name}</h2>
-                    {hostedEventElements && (
-                        <div>
-                            <h3>You are hosting</h3>
-                            {hostedEventElements}
-                        </div>
-                    )}
-                </div>
+                <>
+                    <div className='user-message'>
+                        <h2>Welcome {user.name}</h2>
+                    </div>
+                    <div className='user-events'>
+                        {eventsHosting.length > 0 ? (
+                            <div>
+                                <h3>Events Hosting</h3>
+                                {hostedEventElements && hostedEventElements}
+                            </div>
+                        ) : (
+                            <div>
+                                <h5>You aren't hosting any events</h5>
+                            </div>
+                        )}
+                    </div>
+                </>
             ) : (
                 <h4>
                     Please{' '}
@@ -52,8 +60,14 @@ function Home() {
                 </h4>
             )}
             <div className='all-events'>
-                <h3>All Events</h3>
-                {eventElements && eventElements}
+                {events.length > 0 ? (
+                    <div>
+                        <h3>All Events</h3>
+                        {eventElements && eventElements}
+                    </div>
+                ) : (
+                    <h5>We couldn't find any events</h5>
+                )}
             </div>
         </div>
     )
