@@ -1,11 +1,11 @@
-import { createContext, useState, useEffect, useContext } from 'react'
-import { UserContext } from './UserContext'
+import { createContext, useState, useEffect } from 'react'
+const URL = import.meta.env.VITE_URL
 const EventContext = createContext()
 //Update to include user information
 function EventContextProvider({ children }) {
     const [events, setEvents] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-    const url = 'http://localhost:5001/api'
+    const url = URL || 'http://localhost:5001/api'
     useEffect(() => {
         getEvents()
     }, [])

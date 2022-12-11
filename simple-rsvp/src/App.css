@@ -106,6 +106,10 @@ a:visited {
 .event-description {
     font-size: var(--font-reg);
 }
+
+.event-time {
+    padding: 0.5rem 0 0.5rem 0;
+}
 .event-time > p {
     margin-bottom: 0;
 }
@@ -139,6 +143,11 @@ a:visited {
     font-size: var(--font-lg);
 }
 
+.event-details {
+    padding: 2rem 0 2rem 0;
+    border-bottom: 1px solid var(--style-clr-secondary);
+}
+
 .event-controls {
     margin-top: 3em;
 }
@@ -149,7 +158,16 @@ a:visited {
 }
 
 .invite-user {
-    width: 175px;
+    width: 70%;
+}
+
+.user-message {
+    border-bottom: 1px solid var(--style-clr-primary);
+}
+
+.user-events,
+.all-events {
+    margin: 2rem;
 }
 
 .event-creation-form,
@@ -166,7 +184,7 @@ a:visited {
 }
 
 .text-input {
-    padding: 1em;
+    padding: 0.5em;
     border-radius: 8px;
     margin: 0.25em;
     border: 1px solid gray;
@@ -271,7 +289,9 @@ a:visited {
     width: 30px;
     border-radius: 50%;
 }
-
+.invited-users {
+    margin-top: 2rem;
+}
 .invited-users > * {
     width: 50%;
 }
@@ -342,7 +362,15 @@ a:visited {
         justify-content: space-between;
     }
 
+    .event-time {
+        padding: 0;
+    }
+
     .owner-controls {
         margin-top: 6em;
+    }
+
+    .text-input {
+        padding: 1em;
     }
 }

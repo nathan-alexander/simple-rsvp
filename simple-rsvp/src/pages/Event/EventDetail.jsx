@@ -209,7 +209,9 @@ function EventDetail() {
 
                     <div className='event-details'>
                         <div className='event-location'>
-                            <p className='underline'>Location</p>
+                            <p className='underline event-location-address'>
+                                Location
+                            </p>
                             <p className='event-location-address'>
                                 {event.location.street}
                             </p>

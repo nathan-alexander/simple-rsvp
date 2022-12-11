@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react'
-
+const URL = import.meta.env.VITE_URL
 const UserContext = createContext()
 
 function UserContextProvider({ children }) {
@@ -7,7 +7,7 @@ function UserContextProvider({ children }) {
     const [message, setMessage] = useState(null)
     const [eventsHosting, setEventsHosting] = useState([])
     const [eventsAttending, setEventsAttending] = useState([])
-    const url = 'http://localhost:5001/api'
+    const url = URL || 'http://localhost:5001/api'
 
     async function getEventsHostedByUser(id) {
         const res = await fetch(`${url}/users/${id}/events`)

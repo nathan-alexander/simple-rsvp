@@ -46,6 +46,12 @@ function Home() {
                         ) : (
                             <div>
                                 <h5>You aren't hosting any events</h5>
+                                <NavLink
+                                    to='/create'
+                                    className='btn btn-primary'
+                                >
+                                    Create an event
+                                </NavLink>
                             </div>
                         )}
                     </div>
@@ -66,7 +72,7 @@ function Home() {
                         {eventElements && eventElements}
                     </div>
                 ) : (
-                    <h5>We couldn't find any events</h5>
+                    <></>
                 )}
             </div>
         </div>
