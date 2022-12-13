@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const mongoose = require('mongoose')
+const { isNull } = require('util')
 const Event = require('../models/eventModel')
 const User = require('../models/userModel')
 const { getDistanceBetween } = require('../utils/getDistanceBetween')
@@ -19,6 +20,7 @@ const getEvents = asyncHandler(async (req, res) => {
 // @access Public
 // @method GET
 const createEvent = asyncHandler(async (req, res) => {
+    console.log(req.body)
     const {
         name,
         description,
@@ -39,7 +41,7 @@ const createEvent = asyncHandler(async (req, res) => {
         !longitude ||
         !startDate ||
         !endDate ||
-        !public
+        public.isNull
     ) {
         res.status(400)
         throw new Error('Please include all fields')
@@ -98,7 +100,7 @@ const deleteEventById = asyncHandler(async (req, res) => {
 const uninviteUserFromEvent = asyncHandler(async (req, res) => {
     //Return only the event
     try {
-        let pullEventInvitedPromise = await Event.findOneAndUpdate(
+        await Event.findOneAndUpdate(
             { _id: req.params.id },
             {
                 $pull: {
@@ -120,7 +122,7 @@ const uninviteUserFromEvent = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
-        let pullUserInvitedPromise = await User.findOneAndUpdate(
+        await User.findOneAndUpdate(
             { _id: req.params.userId },
             {
                 $pull: {
@@ -131,7 +133,7 @@ const uninviteUserFromEvent = asyncHandler(async (req, res) => {
                 new: true,
             }
         )
-        let pullUserAttendingPromise = await User.findOneAndUpdate(
+        await User.findOneAndUpdate(
             { _id: req.params.userId },
             {
                 $pull: {
@@ -235,7 +237,10 @@ const getEventsNearby = asyncHandler(async (req, res) => {
     //loop thru the events, performing a calculation on lat lon (need a utils)
     //if calculation is less than radius, return it
     try {
-        const allEvents = await Event.find({ endDate: { $gt: new Date() } })
+        const allEvents = await Event.find({
+            endDate: { $gt: new Date() },
+            public: true,
+        })
             .lean()
             .sort({ startDate: 1 })
         let matchingEvents = []

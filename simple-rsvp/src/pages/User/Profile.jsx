@@ -18,7 +18,7 @@ function Profile() {
         return (
             <div className='profile-page'>
                 <div className='profile-page-options'>
-                    <h2 className='profile-page-header'>Account Options</h2>
+                    <h1 className='profile-page-header'>Account Options</h1>
                     <UploadProfileImage />
                     <h3>Logout</h3>
                     <button

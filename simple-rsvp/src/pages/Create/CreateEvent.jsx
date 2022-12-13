@@ -56,12 +56,12 @@ function CreateEvent() {
             public: newEvent.public,
             userId: user._id,
         }
-        console.log(eventObject)
+
         let coordinates = await getCoordinatesFromAddress(eventObject.location)
         eventObject.latitude = coordinates.lat
         eventObject.longitude = coordinates.lng
-
-        createEvent(eventObject)
+        console.log(eventObject)
+        await createEvent(eventObject)
         navigate('/')
     }
     return (
