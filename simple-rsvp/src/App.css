@@ -46,8 +46,12 @@
     list-style: none;
     justify-content: space-evenly;
     padding: 0;
+    margin-bottom: 10px;
 }
 
+.header-nav {
+    margin-top: 1em;
+}
 .nav-element {
     cursor: pointer;
     margin: 10px;
@@ -146,6 +150,7 @@ a:visited {
 .event-details {
     padding: 2rem 0 2rem 0;
     border-bottom: 1px solid var(--style-clr-secondary);
+    align-items: baseline;
 }
 
 .event-controls {
@@ -290,7 +295,7 @@ a:visited {
     border-radius: 50%;
 }
 .invited-users {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 .invited-users > * {
     width: 50%;
