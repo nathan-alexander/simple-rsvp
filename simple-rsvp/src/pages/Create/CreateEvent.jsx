@@ -66,6 +66,7 @@ function CreateEvent() {
     }
     return (
         <div>
+            <h3 className='primary'>Create</h3>
             <form onSubmit={handleSubmit} className='event-creation-form'>
                 <input
                     type='text'

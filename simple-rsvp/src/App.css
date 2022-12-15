@@ -68,11 +68,15 @@ a {
     text-decoration: none;
 }
 
-a:visited {
-    color: black;
+a:hover {
+    color: var(--style-clr-primary);
 }
 
 .link:hover {
+    color: var(--style-clr-primary);
+}
+
+.active {
     color: var(--style-clr-primary);
 }
 
@@ -215,6 +219,7 @@ a:visited {
 
 .btn-primary {
     background-color: var(--style-clr-primary);
+    color: white;
 }
 
 .btn-secondary {
@@ -290,8 +295,8 @@ a:visited {
 }
 
 .profile-image-small {
-    height: 30px;
-    width: 30px;
+    height: 24px;
+    width: 24px;
     border-radius: 50%;
 }
 .invited-users {
