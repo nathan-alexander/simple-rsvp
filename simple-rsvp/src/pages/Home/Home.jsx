@@ -38,7 +38,7 @@ function Home() {
                         <h2>Welcome {user.name}</h2>
                     </div>
                     <div className='user-events'>
-                        {eventsHosting.length > 0 ? (
+                        {eventsHosting && eventsHosting.length > 0 ? (
                             <div>
                                 <h3>Events Hosting</h3>
                                 {hostedEventElements && hostedEventElements}

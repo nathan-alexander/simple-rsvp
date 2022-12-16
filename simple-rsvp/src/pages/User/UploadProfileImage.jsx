@@ -72,14 +72,14 @@ function UploadProfileImage() {
 
                     {selectedFile ? (
                         <button
-                            className='btn btn-secondary'
+                            className='btn btn-secondary reduced-width centered'
                             onClick={() => handleUpload(selectedFile)}
                         >
                             Upload
                         </button>
                     ) : (
                         <button
-                            className='btn btn-secondary'
+                            className='btn btn-secondary reduced-width centered'
                             onClick={() => onButtonClick()}
                         >
                             Change Profile Image

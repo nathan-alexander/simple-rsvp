@@ -340,6 +340,9 @@ a:hover {
     text-decoration: underline;
 }
 
+.centered {
+    margin: 1em auto !important;
+}
 .profile-page-header {
     border-bottom: 1px solid gray;
 }
