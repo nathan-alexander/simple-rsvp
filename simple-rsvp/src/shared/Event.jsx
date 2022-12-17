@@ -53,7 +53,7 @@ function Event({ event }) {
     }
 
     return (
-        <Link to={`event/${event._id}`}>
+        <Link to={`event/${event._id}`} className='event-detail-link'>
             <div className='event'>
                 <div className='event-header'>
                     <div className='event-host'>{displayEventOwner()}</div>

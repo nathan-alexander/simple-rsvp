@@ -14,19 +14,19 @@ function Header() {
                 <ul className='nav-elements'>
                     {user ? (
                         <>
-                            <NavLink to='/invitations'>
+                            <NavLink to='/invitations' className='nav-link'>
                                 <li className='nav-element link'>
                                     Invitations
                                 </li>
                             </NavLink>
 
-                            <NavLink to='/create'>
+                            <NavLink to='/create' className='nav-link'>
                                 <li className='nav-element link'>Create</li>
                             </NavLink>
-                            <NavLink to='/nearme'>
+                            <NavLink to='/nearme' className='nav-link'>
                                 <li className='nav-element link'>Near Me</li>
                             </NavLink>
-                            <NavLink to='/profile'>
+                            <NavLink to='/profile' className='nav-link'>
                                 <li className='nav-element link'>
                                     {user.profileImageUrl ? (
                                         <img

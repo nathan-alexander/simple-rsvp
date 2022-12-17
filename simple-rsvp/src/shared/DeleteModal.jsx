@@ -1,8 +1,10 @@
 import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
+
 function DeleteModal(props) {
+    const { handleDelete, ...modalProps } = props
+    console.log(handleDelete)
     return (
-        <Modal {...props} size='lg' centered>
+        <Modal {...modalProps} size='lg' centered>
             <Modal.Header closeButton closeLabel='Close'>
                 <Modal.Title>Delete {props.item}?</Modal.Title>
             </Modal.Header>
@@ -13,10 +15,7 @@ function DeleteModal(props) {
                 <button className='btn btn-secondary' onClick={props.onHide}>
                     Close
                 </button>
-                <button
-                    className='btn btn-decline'
-                    onClick={props.handleDelete}
-                >
+                <button className='btn btn-decline' onClick={handleDelete}>
                     Delete
                 </button>
             </Modal.Footer>

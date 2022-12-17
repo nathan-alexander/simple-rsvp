@@ -68,11 +68,11 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    color: var(--style-clr-primary);
+.event-detail-link:hover {
+    color: black;
 }
 
-.link:hover {
+.nav-link:hover {
     color: var(--style-clr-primary);
 }
 
