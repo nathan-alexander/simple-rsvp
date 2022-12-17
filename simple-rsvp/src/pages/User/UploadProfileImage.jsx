@@ -1,5 +1,6 @@
 import { useContext, useState, useRef } from 'react'
 import { UserContext } from '../../context/UserContext'
+// @ts-ignore
 import { uploadFile } from 'react-s3'
 import { Buffer } from 'buffer'
 import { toast, ToastContainer } from 'react-toastify'
