@@ -18,17 +18,6 @@ app.get('/', (req, res) => {
     res.status(200).send('Hello')
 })
 
-app.get('/*', function (req, res) {
-    res.sendFile(
-        path.join(__dirname, '../simple-rsvp/index.html'),
-        function (err) {
-            if (err) {
-                res.status(500).send(err)
-            }
-        }
-    )
-})
-
 // Routes
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/events', require('./routes/eventRoutes'))
