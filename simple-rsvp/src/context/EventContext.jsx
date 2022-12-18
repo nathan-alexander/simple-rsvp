@@ -18,6 +18,7 @@ function EventContextProvider({ children }) {
 
     async function getEventById(id) {
         const res = await fetch(`${url}/events/${id}`)
+        console.log(res)
         const data = await res.json()
         return data
     }

@@ -2,7 +2,6 @@ import Modal from 'react-bootstrap/Modal'
 
 function DeleteModal(props) {
     const { handleDelete, ...modalProps } = props
-    console.log(handleDelete)
     return (
         <Modal {...modalProps} size='lg' centered>
             <Modal.Header closeButton closeLabel='Close'>

@@ -79,6 +79,7 @@ const createEvent = asyncHandler(async (req, res) => {
 })
 const getEventById = asyncHandler(async (req, res) => {
     //Find id
+    console.log(req)
     const event = await Event.findOne({ _id: req.params.id })
     if (event) {
         res.status(200).json(event)
