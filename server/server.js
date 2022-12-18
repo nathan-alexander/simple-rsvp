@@ -22,6 +22,17 @@ app.get('/', (req, res) => {
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/events', require('./routes/eventRoutes'))
 
+app.get('/*', function (req, res) {
+    res.sendFile(
+        path.join(__dirname, '../simple-rsvp/index.html'),
+        function (err) {
+            if (err) {
+                res.status(500).send(err)
+            }
+        }
+    )
+})
+
 app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
