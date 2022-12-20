@@ -190,6 +190,7 @@ a {
     border: 1px solid gray;
     font-family: 'Poppins', sans-serif;
     border-radius: 8px;
+    width: auto;
 }
 
 .text-input {

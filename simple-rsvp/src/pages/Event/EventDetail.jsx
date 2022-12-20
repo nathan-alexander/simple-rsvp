@@ -16,6 +16,7 @@ function EventDetail() {
     const [editing, setEditing] = useState(false)
     const [eventExpired, setEventExpired] = useState(false)
     const [modalShow, setModalShow] = useState(false)
+
     const { id } = useParams()
     const {
         getEventById,
@@ -65,6 +66,16 @@ function EventDetail() {
                 e.target.type === 'checkbox'
                     ? e.target.checked
                     : e.target.value,
+        }))
+    }
+
+    function handleAddressChange(e) {
+        setEvent((prevState) => ({
+            ...prevState,
+            location: {
+                ...prevState.location,
+                [e.target.name]: e.target.value,
+            },
         }))
     }
 
@@ -189,6 +200,7 @@ function EventDetail() {
                             <input
                                 name='name'
                                 onChange={handleOnChange}
+                                size={event.name.length + 2}
                                 value={event.name}
                                 className='inherit text-input-skinny'
                             ></input>
@@ -212,13 +224,61 @@ function EventDetail() {
                             <p className='underline event-location-address'>
                                 Location
                             </p>
-                            <p className='event-location-address'>
-                                {event.location.street}
-                            </p>
-                            <p className='event-location-address'>
-                                {event.location.city} {event.location.state}{' '}
-                                {event.location.zip}
-                            </p>
+                            {editing ? (
+                                <>
+                                    <p className='event-location-address'>
+                                        <input
+                                            name='street'
+                                            placeholder='Street Address'
+                                            onChange={handleAddressChange}
+                                            value={event.location.street}
+                                            className='inherit text-input-skinny'
+                                        ></input>
+                                    </p>
+                                    <p className='event-location-address'>
+                                        <input
+                                            name='city'
+                                            placeholder='City'
+                                            onChange={handleAddressChange}
+                                            value={event.location.city}
+                                            size={
+                                                event.location.city.length + 2
+                                            }
+                                            className='inherit text-input-skinny'
+                                        ></input>
+                                        <input
+                                            name='state'
+                                            placeholder='State'
+                                            onChange={handleAddressChange}
+                                            value={event.location.state}
+                                            size={
+                                                event.location.state.length + 2
+                                            }
+                                            className='inherit text-input-skinny'
+                                        ></input>
+                                        <input
+                                            name='zip'
+                                            placeholder='ZIP'
+                                            maxLength='5'
+                                            size='5'
+                                            onChange={handleAddressChange}
+                                            value={event.location.zip}
+                                            className='inherit text-input-skinny'
+                                        ></input>
+                                    </p>
+                                </>
+                            ) : (
+                                <>
+                                    <p className='event-location-address'>
+                                        {event.location.street}
+                                    </p>
+                                    <p className='event-location-address'>
+                                        {event.location.city}{' '}
+                                        {event.location.state}{' '}
+                                        {event.location.zip}
+                                    </p>
+                                </>
+                            )}
                         </div>
                         <div className='event-time'>
                             <p style={dateStyles}>{displayDistanceToNow()}</p>
