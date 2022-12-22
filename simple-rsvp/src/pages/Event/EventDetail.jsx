@@ -117,6 +117,14 @@ function EventDetail() {
             day: 'numeric',
         })
     }
+
+    function formatDate(dateStr) {
+        const date = new Date(dateStr)
+        const offsetMs = date.getTimezoneOffset() * 60 * 1000
+        const dateLocal = new Date(date.getTime() - offsetMs)
+        const str = dateLocal.toISOString().slice(0, 16).replace(/-/g, '-')
+        return str
+    }
     if (event) {
         dateStyles = {
             color: eventExpired ? 'red' : 'black',
@@ -281,11 +289,34 @@ function EventDetail() {
                             )}
                         </div>
                         <div className='event-time'>
-                            <p style={dateStyles}>{displayDistanceToNow()}</p>
-                            <span>
-                                {readableDate(event.startDate)} -{' '}
-                                {readableDate(event.endDate)}
-                            </span>
+                            {editing ? (
+                                <>
+                                    <input
+                                        type='datetime-local'
+                                        value={formatDate(event.startDate)}
+                                        onChange={handleOnChange}
+                                        name='startDate'
+                                        className='inherit text-input-skinny'
+                                    />
+                                    <input
+                                        type='datetime-local'
+                                        value={formatDate(event.endDate)}
+                                        onChange={handleOnChange}
+                                        name='endDate'
+                                        className='inherit text-input-skinny'
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <p style={dateStyles}>
+                                        {displayDistanceToNow()}
+                                    </p>
+                                    <span>
+                                        {readableDate(event.startDate)} -{' '}
+                                        {readableDate(event.endDate)}
+                                    </span>
+                                </>
+                            )}
                         </div>
                     </div>
                     <div className='invited-users'>
