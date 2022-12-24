@@ -14,19 +14,39 @@ function Header() {
                 <ul className='nav-elements'>
                     {user ? (
                         <>
-                            <NavLink to='/invitations' className='nav-link'>
+                            <NavLink
+                                to='/invitations'
+                                className={({ isActive }) =>
+                                    isActive ? 'active-nav-link' : 'nav-link'
+                                }
+                            >
                                 <li className='nav-element link'>
                                     Invitations
                                 </li>
                             </NavLink>
 
-                            <NavLink to='/create' className='nav-link'>
+                            <NavLink
+                                to='/create'
+                                className={({ isActive }) =>
+                                    isActive ? 'active-nav-link' : 'nav-link'
+                                }
+                            >
                                 <li className='nav-element link'>Create</li>
                             </NavLink>
-                            <NavLink to='/nearme' className='nav-link'>
+                            <NavLink
+                                to='/nearme'
+                                className={({ isActive }) =>
+                                    isActive ? 'active-nav-link' : 'nav-link'
+                                }
+                            >
                                 <li className='nav-element link'>Near Me</li>
                             </NavLink>
-                            <NavLink to='/profile' className='nav-link'>
+                            <NavLink
+                                to='/profile'
+                                className={({ isActive }) =>
+                                    isActive ? 'active-nav-link' : 'nav-link'
+                                }
+                            >
                                 <li className='nav-element link'>
                                     {user.profileImageUrl ? (
                                         <img
@@ -40,7 +60,12 @@ function Header() {
                             </NavLink>
                         </>
                     ) : (
-                        <NavLink to='/login'>
+                        <NavLink
+                            to='/login'
+                            className={({ isActive }) =>
+                                isActive ? 'active-nav-link' : 'nav-link'
+                            }
+                        >
                             <li className='nav-element link'>Login</li>
                         </NavLink>
                     )}

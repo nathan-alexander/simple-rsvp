@@ -76,7 +76,8 @@ a {
     color: var(--style-clr-primary);
 }
 
-.active {
+.active-nav-link,
+.active-nav-link:hover {
     color: var(--style-clr-primary);
 }
 
