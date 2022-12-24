@@ -1,6 +1,7 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Navigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
 function Signup() {
     const [formData, setFormData] = useState({
         email: '',
@@ -9,19 +10,22 @@ function Signup() {
         name: '',
     })
     const { signupUser, message, user } = useContext(UserContext)
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
-        signupUser(formData)
+        const signedUp = await signupUser(formData)
+        if (!signedUp) {
+            toast.error(message)
+        }
     }
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
     if (!user) {
         return (
             <div>
                 <h1>Signup</h1>
-                {message && <p>{message}</p>}
                 <form className='signup-form' onSubmit={handleSubmit}>
                     <input
                         type='text'
@@ -62,6 +66,7 @@ function Signup() {
                         Submit
                     </button>
                 </form>
+                <ToastContainer />
             </div>
         )
     } else {

@@ -50,15 +50,20 @@ function UserContextProvider({ children }) {
         }
     }
     async function signupUser(user) {
+        setMessage(null)
         const res = await fetch(`${url}/users`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user),
         })
         const data = await res.json()
+        if (!res.ok) {
+            setMessage('Could not sign up')
+        }
         if (data.token) {
             setUser(data)
             localStorage.setItem('user', JSON.stringify(data))
+            return user
         } else {
             setMessage('Could not sign up')
         }
