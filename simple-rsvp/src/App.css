@@ -347,7 +347,10 @@ a {
 }
 
 .profile-page-header {
-    border-bottom: 1px solid gray;
+    color: var(--style-clr-secondary);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--style-clr-secondary);
 }
 
 .profile-page-options {
