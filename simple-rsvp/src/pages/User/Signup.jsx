@@ -8,13 +8,26 @@ function Signup() {
         password: '',
         username: '',
         name: '',
+        password2: '',
     })
+
     const { signupUser, message, user } = useContext(UserContext)
     async function handleSubmit(e) {
         e.preventDefault()
-        const signedUp = await signupUser(formData)
-        if (!signedUp) {
-            toast.error(message)
+        if (formData.password !== formData.password2) {
+            toast.error('Passwords do not match')
+        } else {
+            const userData = {
+                email: formData.email,
+                password: formData.password,
+                name: formData.name,
+                username: formData.username,
+            }
+
+            const signedUp = await signupUser(userData)
+            if (!signedUp) {
+                toast.error(message)
+            }
         }
     }
 
@@ -34,6 +47,7 @@ function Signup() {
                         name='name'
                         onChange={handleChange}
                         className='text-input'
+                        required
                     />
                     <input
                         type='text'
@@ -42,6 +56,7 @@ function Signup() {
                         name='username'
                         onChange={handleChange}
                         className='text-input'
+                        required
                     />
                     <input
                         type='text'
@@ -50,6 +65,7 @@ function Signup() {
                         name='email'
                         onChange={handleChange}
                         className='text-input'
+                        required
                     />
                     <input
                         type='password'
@@ -58,6 +74,16 @@ function Signup() {
                         name='password'
                         onChange={handleChange}
                         className='text-input'
+                        required
+                    />
+                    <input
+                        type='password'
+                        placeholder='Confirm password'
+                        value={formData.password2}
+                        name='password2'
+                        onChange={handleChange}
+                        className='text-input'
+                        required
                     />
                     <button
                         className='btn btn-primary reduced-width'
