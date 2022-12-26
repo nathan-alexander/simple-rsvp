@@ -59,7 +59,7 @@ function Signup() {
                         required
                     />
                     <input
-                        type='text'
+                        type='email'
                         placeholder='Email'
                         value={formData.email}
                         name='email'
