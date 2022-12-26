@@ -40,6 +40,8 @@
 
 .header-text {
     cursor: pointer;
+    padding-right: 0.4rem;
+    border-right: 1px solid gray;
 }
 .nav-elements {
     display: flex;
@@ -55,7 +57,7 @@
 .nav-element {
     cursor: pointer;
     margin: 10px;
-    font-size: var(--font-reg);
+    font-size: var(--font-sm);
 }
 
 .app-container {
@@ -418,5 +420,14 @@ a {
 
     .logout-button-container > * {
         width: 50%;
+    }
+
+    .nav-element {
+        font-size: var(--font-reg);
+    }
+
+    .header-text {
+        border: none;
+        padding: none;
     }
 }
