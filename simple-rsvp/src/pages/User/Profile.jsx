@@ -21,18 +21,20 @@ function Profile() {
                     <h1 className='profile-page-header'>Account Options</h1>
                     <UploadProfileImage />
                     <h3>Logout</h3>
-                    <button
-                        className='btn btn-secondary'
-                        onClick={handleLogout}
-                    >
-                        Logout
-                    </button>
-                    <button
-                        className='btn btn-decline'
-                        onClick={() => setModalShow(true)}
-                    >
-                        Delete Account
-                    </button>
+                    <div className='logout-button-container'>
+                        <button
+                            className='btn btn-secondary centered'
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+                        <button
+                            className='btn btn-decline centered'
+                            onClick={() => setModalShow(true)}
+                        >
+                            Delete Account
+                        </button>
+                    </div>
                     <DeleteModal
                         show={modalShow}
                         onHide={() => setModalShow(false)}
